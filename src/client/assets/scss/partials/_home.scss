@@ -1,0 +1,19 @@
+//-----//
+// CSS //
+//-----//
+
+a.about {
+	display: inline-block;
+	margin-bottom: $h1-vert-margin;
+}
+
+
+//-----------------------//
+// Max Size Declarations //
+//-----------------------//
+
+@media (min-width: #{$max-size}px) and (min-height: #{$max-size}px) {
+	a.about {
+		margin-bottom: $m_h1-vert-margin;
+	}
+}

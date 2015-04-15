@@ -1,0 +1,58 @@
+//-------------------//
+// Size Declarations //
+//-------------------//
+
+$tmp: 8;
+$footer-padding-vert: #{$tmp}vmin;
+$m_footer-padding-vert: round($max-size * 0.01 * $tmp) * 1px;
+
+$tmp: 12;
+$footer-padding-hor: #{$tmp}vmin;
+$m_footer-padding-hor: round($max-size * 0.01 * $tmp) * 1px;
+
+$tmp: 40;
+$logo-max-width: #{$tmp}vmin;
+$m_logo-max-width: round($max-size * 0.01 * $tmp) * 1px;
+
+$tmp: 4;
+$logo-margin-hor: #{$tmp}vmin;
+$m_logo-margin-hor: round($max-size * 0.01 * $tmp) * 1px;
+
+$tmp: 2;
+$logo-margin-vert: #{$tmp}vmin;
+$m_logo-margin-vert: round($max-size * 0.01 * $tmp) * 1px;
+
+
+//-----//
+// CSS //
+//-----//
+
+#site-footer {
+	background-color: $primary;
+	padding: $footer-padding-vert $footer-padding-hor;
+	
+	> h2 {
+		color: $background;
+		margin-top: 0;
+	}
+	
+	img { // for now, all img tags are assumed to be logos
+		max-width: $logo-max-width;
+		margin: $logo-margin-vert $logo-margin-hor;
+	}
+}
+
+//-----------------------//
+// Max Size Declarations //
+//-----------------------//
+
+@media (min-width: #{$max-size}px) and (min-height: #{$max-size}px) {
+	#site-footer {
+		padding: $m_footer-padding-vert $m_footer-padding-hor;
+	
+		img { // for now, all img tags are assumed to be logos
+			max-width: $m_logo-max-width;
+			margin: $m_logo-margin-vert $m_logo-margin-hor;
+		}
+	}
+}

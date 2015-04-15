@@ -1,0 +1,10 @@
+insert into weather_data (weather_data_type_id, weather_data_source_id, weather_data_date_id, weather_data_location_id)
+values <%
+	dataVals.forEach(function(dataValArray, i) {
+		if (i < dataVals.length - 1) {
+			print('(' + dataValArray[0] + ', ' + dataValArray[1] + ', ' + dataValArray[2] + ', ' + dataValArray[3] + ')\n    , ');
+		} else {
+			print('(' + dataValArray[0] + ', ' + dataValArray[1] + ', ' + dataValArray[2] + ', ' + dataValArray[3] + ');');
+		}
+	});
+%>

@@ -1,0 +1,32 @@
+<form class="dialog {{ initialState }} retractable" ng-submit="dataLogicInst.updateGraphData()" ng-novalidate>
+  <div class="title">
+    <h3>Graph Options</h3>
+    <!---
+		---><img src="img/chevron-expanded.png" alt="chevron" class="chevron expanded">
+  </div>
+  <div class="content">
+    <div class="row">
+      <label id="label1" for="datepicker-from">Date From</label>
+      <input type="text" id="datepicker-from" class="datepicker">
+    </div>
+    <div class="row">
+      <label for="datepicker-to">To</label>
+      <input type="text" id="datepicker-to" class="datepicker">
+    </div>
+    <div class="row">
+      <label for="choose-type">Compare Actual Against</label>
+      <select id="choose-type"></select>
+    </div>
+    <div class="row">
+      <label for="choose-measurement-name">Measurement</label>
+      <select id="choose-measurement-name"></select>
+    </div>
+    <div class="row">
+      <label for="choose-location">Location</label>
+      <select id="choose-location"></select>
+    </div>
+    <div class="row">
+      <input type="submit" value="Submit">
+    </div>
+  </div>
+</form>

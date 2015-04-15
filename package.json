@@ -1,0 +1,75 @@
+{
+  "browser": {
+    "TweenLite": "./node_modules/gsap/src/uncompressed/TweenLite.js",
+    "gsapCssPlugin": "./node_modules/gsap/src/uncompressed/plugins/CSSPlugin.js",
+    "angular": "./node_modules/angular/angular.js",
+    "angular-route": "./node_modules/angular-route/angular-route.js"
+  },
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "author": "Phil Olson <philip.olson@protonmail.ch> (https://github.com/olsonpm)",
+  "name": "weather-accuracy",
+  "browserify": {
+    "transform": "browserify-shim"
+  },
+  "browserify-shim": {
+    "angular": {
+      "depends": [
+        "jquery: jQuery"
+      ],
+      "exports": "angular"
+    },
+    "angular-route": {
+      "depends": [
+        "angular"
+      ],
+      "exports": "angular.module('ngRoute').name"
+    }
+  },
+  "dependencies": {
+    "angular": "^1.3.14",
+    "angular-route": "^1.3.14",
+    "bluebird": "^2.9.12",
+    "browserify": "^9.0.3",
+    "browserify-shim": "^3.8.3",
+    "buddy-system": "^1.0.2",
+    "bunyan": "git://github.com/olsonpm/node-bunyan.git",
+    "chai": "^2.1.1",
+    "compression": "^1.4.1",
+    "compute-roundn": "^1.0.3",
+    "d3": "^3.5.5",
+    "express": "^4.12.0",
+    "fancybox": "^3.0.0",
+    "fs-bluebird": "^0.1.2",
+    "gsap": "^1.15.1",
+    "gulp-angular-templatecache": "^1.5.0",
+    "hoverintent-jqplugin": "^0.1.2",
+    "jquery": "^2.1.3",
+    "lambda-js": "^0.1.5",
+    "lodash": "^3.5.0",
+    "mkdirp": "^0.5.0",
+    "mocha": "^2.2.0",
+    "mocha-clean": "^0.4.0",
+    "moment": "^2.9.0",
+    "moment-timezone": "^0.3.0",
+    "ncp": "^2.0.0",
+    "node-helpers": "git://github.com/olsonpm/node-helpers",
+    "node-sass-bluebird": "git://github.com/olsonpm/node-sass-bluebird.git",
+    "normalize.scss": "git://github.com/olsonpm/normalize.scss.git",
+    "perfect-scrollbar": "^0.5.9",
+    "personal-jquery-plugins": "git://github.com/olsonpm/personal-jquery-plugins",
+    "pikaday": "^1.3.2",
+    "promise-task-runner": "git://github.com/olsonpm/promise-task-runner.git",
+    "request-promise": "^0.4.1",
+    "rimraf": "^2.2.8",
+    "stream-to-promise": "^1.0.4",
+    "through2": "^0.6.3",
+    "tiny-lr": "^0.1.5",
+    "uglify-stream": "^1.1.0",
+    "vinyl-fs": "^0.3.13",
+    "vinyl-source-stream": "^1.0.0",
+    "vinyl-transform": "^1.0.0"
+  },
+  "site_env": "WEATHER_ACCURACY_NODE_ENV"
+}

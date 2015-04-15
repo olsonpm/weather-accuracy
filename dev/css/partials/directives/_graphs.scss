@@ -1,0 +1,170 @@
+//-------------------//
+// Size Declarations //
+//-------------------//
+
+$tmp: 8;
+$graph-margin-bot: #{$tmp}vmin;
+$m_graph-margin-bot: round($max-size * 0.01 * $tmp) * 1px;
+
+$tmp: 8;
+$help-size: #{$tmp}vmin;
+$m_help-size: round($max-size * 0.01 * $tmp) * 1px;
+
+$tmp: 3;
+$help-margin: #{$tmp}vmin;
+$m_help-margin: round($max-size * 0.01 * $tmp) * 1px;
+
+
+//------------------//
+// Directive Colors //
+//------------------//
+
+$line-actual-stroke: #178FE5;
+$forecasted-stroke: #FF8000;
+
+
+//-----//
+// CSS //
+//-----//
+
+graphs {
+	display: block;
+	font-size: $font-lv6;
+	
+	h2 {
+		margin-bottom: $h1-vert-margin;
+		
+		> .help {
+			cursor: pointer;
+			display: inline-block;
+			margin-left: $help-margin;
+			border-radius: 50%;
+			color: $background;
+			background-color: $primary;
+			width: $help-size;
+			height: $help-size;
+			
+			&:hover {
+				background-color: $primary-lighter-lv1;
+			}
+		}
+	}
+	h3 {
+		margin-bottom: $h2-vert-margin;
+	}
+
+	.legend {
+		svg {
+			vertical-align: top;
+		}
+	}
+
+	.sources > ul > li
+	 , .aggregate > ul > li {
+		 
+		margin-bottom: $graph-margin-bot;
+	}
+	
+	.sources > ul {
+		h3:before {
+			font-weight: 400;
+			margin-right: 0.8em;
+			content: "Data Source:";
+		}
+	}
+	
+	.aggregate {
+		rect {
+			fill: $forecasted-stroke;
+		}
+	}
+	
+	svg {
+		.axis path
+		, .axis line {
+			fill: none;
+			stroke: #000;
+			shape-rendering: crispEdges;
+		}
+		
+		.axis .tick {
+			&:first-of-type {
+				display: none;
+			}
+		
+			.grid-line {
+				fill: none;
+				stroke: $background-darker-lv2;
+				shape-rendering: crispEdges;
+			}
+		}
+		
+		.line-actual {
+			fill: none;
+			stroke: $line-actual-stroke;
+			stroke-width: 2.5px;
+		}
+		
+		.line-forecasted {
+			fill: none;
+			stroke: $forecasted-stroke;
+			stroke-width: 1px;
+		}
+		.circle-forecasted {
+			fill: $forecasted-stroke;
+			stroke: $forecasted-stroke;
+			stroke-width: 0;
+		}
+		
+		.x.axis > .tick:first-of-type {
+			display: none;
+		}
+		
+		.y-axis-label
+		 , .x-axis-label {
+			text-anchor: middle;
+		}
+	}
+}
+
+
+//-----------------------//
+// Max Size Declarations //
+//-----------------------//
+
+@media (min-width: #{$max-size}px) and (min-height: #{$max-size}px) {
+	graphs {
+		font-size: $m_font-lv6;
+
+		h2 {
+			margin-bottom: $m_h1-vert-margin;
+			
+			> .help {
+				margin-left: $m_help-margin;
+				width: $m_help-size;
+				height: $m_help-size;
+			}
+		}
+		h3 {
+			margin-bottom: $m_h2-vert-margin;
+		}
+		
+		.sources > ul > li
+		 , .aggregate > ul > li {
+		 
+			margin-bottom: $m_graph-margin-bot;
+		}
+		
+		svg {
+			.line-actual {
+				stroke-width: 3.5px;
+			}
+			.line-forecasted {
+				stroke-width: 1.5px;
+			}
+			.circle-forecasted {
+				stroke-width: 1.5px;
+			}
+		}
+	}
+}

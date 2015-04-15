@@ -1,0 +1,10 @@
+insert into weather_date (weather_date_value)
+values <%
+	dates.forEach(function(aDate, i) {
+		if (i !== dates.length - 1) {
+			print("('" + aDate + "')\n    , ");
+		} else {
+			print("('" + aDate + "');");
+		}
+	});
+%>

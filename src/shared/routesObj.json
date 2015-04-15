@@ -1,0 +1,10 @@
+{
+    "home": {
+        "url": "home"
+        , "path": "static/home"
+    }
+    , "about": {
+		"url": "about"
+		, "path": "static/about"
+	}
+}

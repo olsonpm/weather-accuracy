@@ -1,0 +1,2189 @@
+--
+-- PostgreSQL database dump
+--
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- Name: weather_data; Type: TABLE; Schema: public; Owner: phil; Tablespace: 
+--
+
+CREATE TABLE weather_data (
+    weather_data_id bigint NOT NULL,
+    weather_data_type_id bigint NOT NULL,
+    weather_data_source_id bigint NOT NULL,
+    weather_data_date_id bigint NOT NULL,
+    weather_data_location_id bigint NOT NULL
+);
+
+
+ALTER TABLE weather_data OWNER TO phil;
+
+--
+-- Name: weather_data_point; Type: TABLE; Schema: public; Owner: phil; Tablespace: 
+--
+
+CREATE TABLE weather_data_point (
+    weather_data_point_id bigint NOT NULL,
+    weather_data_point_data_id bigint NOT NULL,
+    weather_data_point_value text NOT NULL,
+    weather_data_point_name_id bigint NOT NULL
+);
+
+
+ALTER TABLE weather_data_point OWNER TO phil;
+
+--
+-- Name: weather_data_point_name; Type: TABLE; Schema: public; Owner: phil; Tablespace: 
+--
+
+CREATE TABLE weather_data_point_name (
+    weather_data_point_name_id bigint NOT NULL,
+    weather_data_point_name_value text,
+    weather_data_point_name_unit_id bigint
+);
+
+
+ALTER TABLE weather_data_point_name OWNER TO phil;
+
+--
+-- Name: weather_data_point_name_weather_data_point_name_id_seq; Type: SEQUENCE; Schema: public; Owner: phil
+--
+
+CREATE SEQUENCE weather_data_point_name_weather_data_point_name_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE weather_data_point_name_weather_data_point_name_id_seq OWNER TO phil;
+
+--
+-- Name: weather_data_point_name_weather_data_point_name_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: phil
+--
+
+ALTER SEQUENCE weather_data_point_name_weather_data_point_name_id_seq OWNED BY weather_data_point_name.weather_data_point_name_id;
+
+
+--
+-- Name: weather_data_point_unit; Type: TABLE; Schema: public; Owner: phil; Tablespace: 
+--
+
+CREATE TABLE weather_data_point_unit (
+    weather_data_point_unit_id bigint NOT NULL,
+    weather_data_point_unit_name text NOT NULL
+);
+
+
+ALTER TABLE weather_data_point_unit OWNER TO phil;
+
+--
+-- Name: weather_data_point_unit_weather_data_point_unit_id_seq; Type: SEQUENCE; Schema: public; Owner: phil
+--
+
+CREATE SEQUENCE weather_data_point_unit_weather_data_point_unit_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE weather_data_point_unit_weather_data_point_unit_id_seq OWNER TO phil;
+
+--
+-- Name: weather_data_point_unit_weather_data_point_unit_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: phil
+--
+
+ALTER SEQUENCE weather_data_point_unit_weather_data_point_unit_id_seq OWNED BY weather_data_point_unit.weather_data_point_unit_id;
+
+
+--
+-- Name: weather_data_point_weather_data_point_id_seq; Type: SEQUENCE; Schema: public; Owner: phil
+--
+
+CREATE SEQUENCE weather_data_point_weather_data_point_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE weather_data_point_weather_data_point_id_seq OWNER TO phil;
+
+--
+-- Name: weather_data_point_weather_data_point_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: phil
+--
+
+ALTER SEQUENCE weather_data_point_weather_data_point_id_seq OWNED BY weather_data_point.weather_data_point_id;
+
+
+--
+-- Name: weather_data_type; Type: TABLE; Schema: public; Owner: phil; Tablespace: 
+--
+
+CREATE TABLE weather_data_type (
+    weather_data_type_id bigint NOT NULL,
+    weather_data_type_name text NOT NULL
+);
+
+
+ALTER TABLE weather_data_type OWNER TO phil;
+
+--
+-- Name: weather_data_type_weather_data_type_id_seq; Type: SEQUENCE; Schema: public; Owner: phil
+--
+
+CREATE SEQUENCE weather_data_type_weather_data_type_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE weather_data_type_weather_data_type_id_seq OWNER TO phil;
+
+--
+-- Name: weather_data_type_weather_data_type_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: phil
+--
+
+ALTER SEQUENCE weather_data_type_weather_data_type_id_seq OWNED BY weather_data_type.weather_data_type_id;
+
+
+--
+-- Name: weather_data_weather_data_id_seq; Type: SEQUENCE; Schema: public; Owner: phil
+--
+
+CREATE SEQUENCE weather_data_weather_data_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE weather_data_weather_data_id_seq OWNER TO phil;
+
+--
+-- Name: weather_data_weather_data_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: phil
+--
+
+ALTER SEQUENCE weather_data_weather_data_id_seq OWNED BY weather_data.weather_data_id;
+
+
+--
+-- Name: weather_date; Type: TABLE; Schema: public; Owner: phil; Tablespace: 
+--
+
+CREATE TABLE weather_date (
+    weather_date_id bigint NOT NULL,
+    weather_date_value date NOT NULL
+);
+
+
+ALTER TABLE weather_date OWNER TO phil;
+
+--
+-- Name: weather_date_weather_date_id_seq; Type: SEQUENCE; Schema: public; Owner: phil
+--
+
+CREATE SEQUENCE weather_date_weather_date_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE weather_date_weather_date_id_seq OWNER TO phil;
+
+--
+-- Name: weather_date_weather_date_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: phil
+--
+
+ALTER SEQUENCE weather_date_weather_date_id_seq OWNED BY weather_date.weather_date_id;
+
+
+--
+-- Name: weather_location; Type: TABLE; Schema: public; Owner: phil; Tablespace: 
+--
+
+CREATE TABLE weather_location (
+    weather_location_id bigint NOT NULL,
+    weather_location_latitude numeric(10,6) NOT NULL,
+    weather_location_longitude numeric(10,6) NOT NULL,
+    weather_location_name text NOT NULL
+);
+
+
+ALTER TABLE weather_location OWNER TO phil;
+
+--
+-- Name: weather_location_weather_location_id_seq; Type: SEQUENCE; Schema: public; Owner: phil
+--
+
+CREATE SEQUENCE weather_location_weather_location_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE weather_location_weather_location_id_seq OWNER TO phil;
+
+--
+-- Name: weather_location_weather_location_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: phil
+--
+
+ALTER SEQUENCE weather_location_weather_location_id_seq OWNED BY weather_location.weather_location_id;
+
+
+--
+-- Name: weather_source; Type: TABLE; Schema: public; Owner: phil; Tablespace: 
+--
+
+CREATE TABLE weather_source (
+    weather_source_id bigint NOT NULL,
+    weather_source_name text NOT NULL
+);
+
+
+ALTER TABLE weather_source OWNER TO phil;
+
+--
+-- Name: weather_source_weather_source_id_seq; Type: SEQUENCE; Schema: public; Owner: phil
+--
+
+CREATE SEQUENCE weather_source_weather_source_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE weather_source_weather_source_id_seq OWNER TO phil;
+
+--
+-- Name: weather_source_weather_source_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: phil
+--
+
+ALTER SEQUENCE weather_source_weather_source_id_seq OWNED BY weather_source.weather_source_id;
+
+
+--
+-- Name: weather_data_id; Type: DEFAULT; Schema: public; Owner: phil
+--
+
+ALTER TABLE ONLY weather_data ALTER COLUMN weather_data_id SET DEFAULT nextval('weather_data_weather_data_id_seq'::regclass);
+
+
+--
+-- Name: weather_data_point_id; Type: DEFAULT; Schema: public; Owner: phil
+--
+
+ALTER TABLE ONLY weather_data_point ALTER COLUMN weather_data_point_id SET DEFAULT nextval('weather_data_point_weather_data_point_id_seq'::regclass);
+
+
+--
+-- Name: weather_data_point_name_id; Type: DEFAULT; Schema: public; Owner: phil
+--
+
+ALTER TABLE ONLY weather_data_point_name ALTER COLUMN weather_data_point_name_id SET DEFAULT nextval('weather_data_point_name_weather_data_point_name_id_seq'::regclass);
+
+
+--
+-- Name: weather_data_point_unit_id; Type: DEFAULT; Schema: public; Owner: phil
+--
+
+ALTER TABLE ONLY weather_data_point_unit ALTER COLUMN weather_data_point_unit_id SET DEFAULT nextval('weather_data_point_unit_weather_data_point_unit_id_seq'::regclass);
+
+
+--
+-- Name: weather_data_type_id; Type: DEFAULT; Schema: public; Owner: phil
+--
+
+ALTER TABLE ONLY weather_data_type ALTER COLUMN weather_data_type_id SET DEFAULT nextval('weather_data_type_weather_data_type_id_seq'::regclass);
+
+
+--
+-- Name: weather_date_id; Type: DEFAULT; Schema: public; Owner: phil
+--
+
+ALTER TABLE ONLY weather_date ALTER COLUMN weather_date_id SET DEFAULT nextval('weather_date_weather_date_id_seq'::regclass);
+
+
+--
+-- Name: weather_location_id; Type: DEFAULT; Schema: public; Owner: phil
+--
+
+ALTER TABLE ONLY weather_location ALTER COLUMN weather_location_id SET DEFAULT nextval('weather_location_weather_location_id_seq'::regclass);
+
+
+--
+-- Name: weather_source_id; Type: DEFAULT; Schema: public; Owner: phil
+--
+
+ALTER TABLE ONLY weather_source ALTER COLUMN weather_source_id SET DEFAULT nextval('weather_source_weather_source_id_seq'::regclass);
+
+
+--
+-- Data for Name: weather_data; Type: TABLE DATA; Schema: public; Owner: phil
+--
+
+COPY weather_data (weather_data_id, weather_data_type_id, weather_data_source_id, weather_data_date_id, weather_data_location_id) FROM stdin;
+1	1	1	1	1
+2	1	1	1	2
+3	1	1	1	3
+4	1	1	2	1
+5	1	1	2	2
+6	1	1	2	3
+7	1	1	3	1
+8	1	1	3	2
+9	1	1	3	3
+10	1	1	4	1
+11	1	1	4	2
+12	1	1	4	3
+13	1	1	5	1
+14	1	1	5	2
+15	1	1	5	3
+16	1	1	6	1
+17	1	1	6	2
+18	1	1	6	3
+19	1	2	1	1
+20	1	2	1	2
+21	1	2	1	3
+22	1	2	2	1
+23	1	2	2	2
+24	1	2	2	3
+25	1	2	3	1
+26	1	2	3	2
+27	1	2	3	3
+28	1	2	4	1
+29	1	2	4	2
+30	1	2	4	3
+31	1	2	5	1
+32	1	2	5	2
+33	1	2	5	3
+34	1	2	6	1
+35	1	2	6	2
+36	1	2	6	3
+37	1	3	1	1
+38	1	3	1	2
+39	1	3	1	3
+40	1	3	2	1
+41	1	3	2	2
+42	1	3	2	3
+43	1	3	3	1
+44	1	3	3	2
+45	1	3	3	3
+46	1	3	4	1
+47	1	3	4	2
+48	1	3	4	3
+49	1	3	5	1
+50	1	3	5	2
+51	1	3	5	3
+52	1	3	6	1
+53	1	3	6	2
+54	1	3	6	3
+55	2	1	1	1
+56	2	1	1	2
+57	2	1	1	3
+58	2	1	2	1
+59	2	1	2	2
+60	2	1	2	3
+61	2	1	3	1
+62	2	1	3	2
+63	2	1	3	3
+64	2	1	4	1
+65	2	1	4	2
+66	2	1	4	3
+67	2	1	5	1
+68	2	1	5	2
+69	2	1	5	3
+70	2	1	6	1
+71	2	1	6	2
+72	2	1	6	3
+73	2	2	1	1
+74	2	2	1	2
+75	2	2	1	3
+76	2	2	2	1
+77	2	2	2	2
+78	2	2	2	3
+79	2	2	3	1
+80	2	2	3	2
+81	2	2	3	3
+82	2	2	4	1
+83	2	2	4	2
+84	2	2	4	3
+85	2	2	5	1
+86	2	2	5	2
+87	2	2	5	3
+88	2	2	6	1
+89	2	2	6	2
+90	2	2	6	3
+91	2	3	1	1
+92	2	3	1	2
+93	2	3	1	3
+94	2	3	2	1
+95	2	3	2	2
+96	2	3	2	3
+97	2	3	3	1
+98	2	3	3	2
+99	2	3	3	3
+100	2	3	4	1
+101	2	3	4	2
+102	2	3	4	3
+103	2	3	5	1
+104	2	3	5	2
+105	2	3	5	3
+106	2	3	6	1
+107	2	3	6	2
+108	2	3	6	3
+109	3	1	1	1
+110	3	1	1	2
+111	3	1	1	3
+112	3	1	2	1
+113	3	1	2	2
+114	3	1	2	3
+115	3	1	3	1
+116	3	1	3	2
+117	3	1	3	3
+118	3	1	4	1
+119	3	1	4	2
+120	3	1	4	3
+121	3	1	5	1
+122	3	1	5	2
+123	3	1	5	3
+124	3	1	6	1
+125	3	1	6	2
+126	3	1	6	3
+127	3	2	1	1
+128	3	2	1	2
+129	3	2	1	3
+130	3	2	2	1
+131	3	2	2	2
+132	3	2	2	3
+133	3	2	3	1
+134	3	2	3	2
+135	3	2	3	3
+136	3	2	4	1
+137	3	2	4	2
+138	3	2	4	3
+139	3	2	5	1
+140	3	2	5	2
+141	3	2	5	3
+142	3	2	6	1
+143	3	2	6	2
+144	3	2	6	3
+145	3	3	1	1
+146	3	3	1	2
+147	3	3	1	3
+148	3	3	2	1
+149	3	3	2	2
+150	3	3	2	3
+151	3	3	3	1
+152	3	3	3	2
+153	3	3	3	3
+154	3	3	4	1
+155	3	3	4	2
+156	3	3	4	3
+157	3	3	5	1
+158	3	3	5	2
+159	3	3	5	3
+160	3	3	6	1
+161	3	3	6	2
+162	3	3	6	3
+163	4	1	1	1
+164	4	1	1	2
+165	4	1	1	3
+166	4	1	2	1
+167	4	1	2	2
+168	4	1	2	3
+169	4	1	3	1
+170	4	1	3	2
+171	4	1	3	3
+172	4	1	4	1
+173	4	1	4	2
+174	4	1	4	3
+175	4	1	5	1
+176	4	1	5	2
+177	4	1	5	3
+178	4	1	6	1
+179	4	1	6	2
+180	4	1	6	3
+181	4	2	1	1
+182	4	2	1	2
+183	4	2	1	3
+184	4	2	2	1
+185	4	2	2	2
+186	4	2	2	3
+187	4	2	3	1
+188	4	2	3	2
+189	4	2	3	3
+190	4	2	4	1
+191	4	2	4	2
+192	4	2	4	3
+193	4	2	5	1
+194	4	2	5	2
+195	4	2	5	3
+196	4	2	6	1
+197	4	2	6	2
+198	4	2	6	3
+199	4	3	1	1
+200	4	3	1	2
+201	4	3	1	3
+202	4	3	2	1
+203	4	3	2	2
+204	4	3	2	3
+205	4	3	3	1
+206	4	3	3	2
+207	4	3	3	3
+208	4	3	4	1
+209	4	3	4	2
+210	4	3	4	3
+211	4	3	5	1
+212	4	3	5	2
+213	4	3	5	3
+214	4	3	6	1
+215	4	3	6	2
+216	4	3	6	3
+217	5	1	1	1
+218	5	1	1	2
+219	5	1	1	3
+220	5	1	2	1
+221	5	1	2	2
+222	5	1	2	3
+223	5	1	3	1
+224	5	1	3	2
+225	5	1	3	3
+226	5	1	4	1
+227	5	1	4	2
+228	5	1	4	3
+229	5	1	5	1
+230	5	1	5	2
+231	5	1	5	3
+232	5	1	6	1
+233	5	1	6	2
+234	5	1	6	3
+235	5	2	1	1
+236	5	2	1	2
+237	5	2	1	3
+238	5	2	2	1
+239	5	2	2	2
+240	5	2	2	3
+241	5	2	3	1
+242	5	2	3	2
+243	5	2	3	3
+244	5	2	4	1
+245	5	2	4	2
+246	5	2	4	3
+247	5	2	5	1
+248	5	2	5	2
+249	5	2	5	3
+250	5	2	6	1
+251	5	2	6	2
+252	5	2	6	3
+253	5	3	1	1
+254	5	3	1	2
+255	5	3	1	3
+256	5	3	2	1
+257	5	3	2	2
+258	5	3	2	3
+259	5	3	3	1
+260	5	3	3	2
+261	5	3	3	3
+262	5	3	4	1
+263	5	3	4	2
+264	5	3	4	3
+265	5	3	5	1
+266	5	3	5	2
+267	5	3	5	3
+268	5	3	6	1
+269	5	3	6	2
+270	5	3	6	3
+271	6	1	1	1
+272	6	1	1	2
+273	6	1	1	3
+274	6	1	2	1
+275	6	1	2	2
+276	6	1	2	3
+277	6	1	3	1
+278	6	1	3	2
+279	6	1	3	3
+280	6	1	4	1
+281	6	1	4	2
+282	6	1	4	3
+283	6	1	5	1
+284	6	1	5	2
+285	6	1	5	3
+286	6	1	6	1
+287	6	1	6	2
+288	6	1	6	3
+289	6	2	1	1
+290	6	2	1	2
+291	6	2	1	3
+292	6	2	2	1
+293	6	2	2	2
+294	6	2	2	3
+295	6	2	3	1
+296	6	2	3	2
+297	6	2	3	3
+298	6	2	4	1
+299	6	2	4	2
+300	6	2	4	3
+301	6	2	5	1
+302	6	2	5	2
+303	6	2	5	3
+304	6	2	6	1
+305	6	2	6	2
+306	6	2	6	3
+307	6	3	1	1
+308	6	3	1	2
+309	6	3	1	3
+310	6	3	2	1
+311	6	3	2	2
+312	6	3	2	3
+313	6	3	3	1
+314	6	3	3	2
+315	6	3	3	3
+316	6	3	4	1
+317	6	3	4	2
+318	6	3	4	3
+319	6	3	5	1
+320	6	3	5	2
+321	6	3	5	3
+322	6	3	6	1
+323	6	3	6	2
+324	6	3	6	3
+352	2	1	174	1
+353	3	1	175	1
+354	4	1	176	1
+355	5	1	177	1
+\.
+
+
+--
+-- Data for Name: weather_data_point; Type: TABLE DATA; Schema: public; Owner: phil
+--
+
+COPY weather_data_point (weather_data_point_id, weather_data_point_data_id, weather_data_point_value, weather_data_point_name_id) FROM stdin;
+1	1	11	1
+2	1	4	2
+3	1	14	3
+4	2	11	1
+5	2	3	2
+6	2	1	3
+7	3	10	1
+8	3	1	2
+9	3	8	3
+10	4	10	1
+11	4	3	2
+12	4	11	3
+13	5	10	1
+14	5	3	2
+15	5	5	3
+16	6	13	1
+17	6	5	2
+18	6	13	3
+19	7	12	1
+20	7	5	2
+21	7	17	3
+22	8	15	1
+23	8	1	2
+24	8	4	3
+25	9	14	1
+26	9	2	2
+27	9	17	3
+28	10	11	1
+29	10	0	2
+30	10	9	3
+31	11	12	1
+32	11	1	2
+33	11	18	3
+34	12	13	1
+35	12	5	2
+36	12	13	3
+37	13	14	1
+38	13	4	2
+39	13	19	3
+40	14	12	1
+41	14	4	2
+42	14	6	3
+43	15	11	1
+44	15	1	2
+45	15	17	3
+46	16	14	1
+47	16	3	2
+48	16	2	3
+49	17	13	1
+50	17	3	2
+51	17	3	3
+52	18	12	1
+53	18	-2	2
+54	18	3	3
+55	19	11	1
+56	19	0	2
+57	19	0	3
+58	20	13	1
+59	20	3	2
+60	20	19	3
+61	21	14	1
+62	21	3	2
+63	21	15	3
+64	22	15	1
+65	22	1	2
+66	22	9	3
+67	23	12	1
+68	23	5	2
+69	23	8	3
+70	24	15	1
+71	24	5	2
+72	24	11	3
+73	25	14	1
+74	25	5	2
+75	25	2	3
+76	26	14	1
+77	26	3	2
+78	26	3	3
+79	27	11	1
+80	27	1	2
+81	27	12	3
+82	28	10	1
+83	28	1	2
+84	28	9	3
+85	29	12	1
+86	29	5	2
+87	29	4	3
+88	30	12	1
+89	30	4	2
+90	30	6	3
+91	31	15	1
+92	31	4	2
+93	31	2	3
+94	32	13	1
+95	32	5	2
+96	32	17	3
+97	33	14	1
+98	33	4	2
+99	33	6	3
+100	34	14	1
+101	34	3	2
+102	34	8	3
+103	35	14	1
+104	35	4	2
+105	35	19	3
+106	36	11	1
+107	36	-7	2
+108	36	5	3
+109	37	11	1
+110	37	3	2
+111	37	14	3
+112	38	12	1
+113	38	3	2
+114	38	6	3
+115	39	15	1
+116	39	3	2
+117	39	16	3
+118	40	13	1
+119	40	4	2
+120	40	11	3
+121	41	12	1
+122	41	0	2
+123	41	18	3
+124	42	13	1
+125	42	3	2
+126	42	19	3
+127	43	10	1
+128	43	4	2
+129	43	17	3
+130	44	12	1
+131	44	5	2
+132	44	4	3
+133	45	14	1
+134	45	5	2
+135	45	8	3
+136	46	11	1
+137	46	3	2
+138	46	17	3
+139	47	14	1
+140	47	3	2
+141	47	9	3
+142	48	14	1
+143	48	3	2
+144	48	3	3
+145	49	11	1
+146	49	1	2
+147	49	18	3
+148	50	10	1
+149	50	5	2
+150	50	12	3
+151	51	10	1
+152	51	4	2
+153	51	0	3
+154	52	10	1
+155	52	4	2
+156	52	5	3
+157	53	12	1
+158	53	0	2
+159	53	5	3
+160	54	10	1
+161	54	-8	2
+162	54	12	3
+163	55	15	1
+164	55	2	2
+165	55	13	3
+166	56	14	1
+167	56	2	2
+168	56	2	3
+169	57	10	1
+170	57	4	2
+171	57	12	3
+172	58	10	1
+173	58	4	2
+174	58	12	3
+175	59	12	1
+176	59	5	2
+177	59	2	3
+178	60	11	1
+179	60	3	2
+180	60	2	3
+181	61	12	1
+182	61	2	2
+183	61	18	3
+184	62	11	1
+185	62	5	2
+186	62	5	3
+187	63	14	1
+188	63	4	2
+189	63	11	3
+190	64	11	1
+191	64	5	2
+192	64	11	3
+193	65	10	1
+194	65	2	2
+195	65	2	3
+196	66	10	1
+197	66	2	2
+198	66	16	3
+199	67	12	1
+200	67	3	2
+201	67	9	3
+202	68	10	1
+203	68	4	2
+204	68	1	3
+205	69	13	1
+206	69	2	2
+207	69	13	3
+208	70	11	1
+209	70	3	2
+210	70	14	3
+211	71	15	1
+212	71	3	2
+213	71	6	3
+214	72	15	1
+215	72	-7	2
+216	72	8	3
+217	73	15	1
+218	73	0	2
+219	73	1	3
+220	74	12	1
+221	74	0	2
+222	74	6	3
+223	75	12	1
+224	75	3	2
+225	75	8	3
+226	76	11	1
+227	76	4	2
+228	76	5	3
+229	77	11	1
+230	77	1	2
+231	77	4	3
+232	78	10	1
+233	78	2	2
+234	78	5	3
+235	79	12	1
+236	79	4	2
+237	79	17	3
+238	80	14	1
+239	80	5	2
+240	80	3	3
+241	81	11	1
+242	81	0	2
+243	81	8	3
+244	82	11	1
+245	82	4	2
+246	82	17	3
+247	83	11	1
+248	83	2	2
+249	83	0	3
+250	84	13	1
+251	84	4	2
+252	84	7	3
+253	85	13	1
+254	85	3	2
+255	85	5	3
+256	86	15	1
+257	86	5	2
+258	86	13	3
+259	87	12	1
+260	87	3	2
+261	87	8	3
+262	88	11	1
+263	88	2	2
+264	88	10	3
+265	89	14	1
+266	89	4	2
+267	89	17	3
+268	90	12	1
+269	90	-6	2
+270	90	1	3
+271	91	11	1
+272	91	1	2
+273	91	2	3
+274	92	11	1
+275	92	4	2
+276	92	17	3
+277	93	14	1
+278	93	4	2
+279	93	5	3
+280	94	11	1
+281	94	1	2
+282	94	0	3
+283	95	12	1
+284	95	2	2
+285	95	8	3
+286	96	14	1
+287	96	0	2
+288	96	10	3
+289	97	10	1
+290	97	0	2
+291	97	15	3
+292	98	13	1
+293	98	5	2
+294	98	4	3
+295	99	11	1
+296	99	5	2
+297	99	19	3
+298	100	13	1
+299	100	5	2
+300	100	8	3
+301	101	11	1
+302	101	0	2
+303	101	8	3
+304	102	11	1
+305	102	5	2
+306	102	17	3
+307	103	12	1
+308	103	3	2
+309	103	1	3
+310	104	14	1
+311	104	1	2
+312	104	17	3
+313	105	14	1
+314	105	5	2
+315	105	17	3
+316	106	11	1
+317	106	4	2
+318	106	5	3
+319	107	15	1
+320	107	2	2
+321	107	16	3
+322	108	13	1
+323	108	-10	2
+324	108	11	3
+325	109	10	1
+326	109	4	2
+327	109	11	3
+328	110	14	1
+329	110	1	2
+330	110	16	3
+331	111	13	1
+332	111	1	2
+333	111	6	3
+334	112	10	1
+335	112	3	2
+336	112	12	3
+337	113	11	1
+338	113	4	2
+339	113	13	3
+340	114	10	1
+341	114	2	2
+342	114	8	3
+343	115	15	1
+344	115	2	2
+345	115	8	3
+346	116	12	1
+347	116	1	2
+348	116	13	3
+349	117	15	1
+350	117	2	2
+351	117	8	3
+352	118	10	1
+353	118	5	2
+354	118	16	3
+355	119	14	1
+356	119	0	2
+357	119	6	3
+358	120	14	1
+359	120	1	2
+360	120	12	3
+361	121	13	1
+362	121	1	2
+363	121	18	3
+364	122	12	1
+365	122	4	2
+366	122	2	3
+367	123	12	1
+368	123	4	2
+369	123	14	3
+370	124	12	1
+371	124	0	2
+372	124	6	3
+373	125	13	1
+374	125	3	2
+375	125	13	3
+376	126	15	1
+377	126	-2	2
+378	126	7	3
+379	127	15	1
+380	127	4	2
+381	127	18	3
+382	128	13	1
+383	128	0	2
+384	128	10	3
+385	129	10	1
+386	129	4	2
+387	129	9	3
+388	130	11	1
+389	130	3	2
+390	130	14	3
+391	131	12	1
+392	131	1	2
+393	131	11	3
+394	132	11	1
+395	132	5	2
+396	132	15	3
+397	133	12	1
+398	133	5	2
+399	133	10	3
+400	134	15	1
+401	134	1	2
+402	134	6	3
+403	135	10	1
+404	135	1	2
+405	135	6	3
+406	136	15	1
+407	136	1	2
+408	136	10	3
+409	137	15	1
+410	137	3	2
+411	137	18	3
+412	138	11	1
+413	138	3	2
+414	138	2	3
+415	139	14	1
+416	139	0	2
+417	139	17	3
+418	140	11	1
+419	140	1	2
+420	140	8	3
+421	141	11	1
+422	141	1	2
+423	141	8	3
+424	142	13	1
+425	142	5	2
+426	142	8	3
+427	143	12	1
+428	143	1	2
+429	143	9	3
+430	144	10	1
+431	144	-7	2
+432	144	10	3
+433	145	15	1
+434	145	5	2
+435	145	10	3
+436	146	13	1
+437	146	3	2
+438	146	1	3
+439	147	15	1
+440	147	5	2
+441	147	17	3
+442	148	14	1
+443	148	4	2
+444	148	2	3
+445	149	13	1
+446	149	5	2
+447	149	2	3
+448	150	11	1
+449	150	1	2
+450	150	15	3
+451	151	11	1
+452	151	0	2
+453	151	9	3
+454	152	13	1
+455	152	5	2
+456	152	19	3
+457	153	15	1
+458	153	3	2
+459	153	1	3
+460	154	13	1
+461	154	5	2
+462	154	17	3
+463	155	10	1
+464	155	1	2
+465	155	9	3
+466	156	10	1
+467	156	0	2
+468	156	0	3
+469	157	13	1
+470	157	5	2
+471	157	13	3
+472	158	11	1
+473	158	0	2
+474	158	13	3
+475	159	15	1
+476	159	5	2
+477	159	18	3
+478	160	11	1
+479	160	0	2
+480	160	2	3
+481	161	15	1
+482	161	1	2
+483	161	16	3
+484	162	15	1
+485	162	-4	2
+486	162	8	3
+487	163	10	1
+488	163	1	2
+489	163	7	3
+490	164	11	1
+491	164	5	2
+492	164	2	3
+493	165	14	1
+494	165	5	2
+495	165	13	3
+496	166	15	1
+497	166	2	2
+498	166	2	3
+499	167	12	1
+500	167	0	2
+501	167	14	3
+502	168	14	1
+503	168	4	2
+504	168	11	3
+505	169	13	1
+506	169	1	2
+507	169	6	3
+508	170	12	1
+509	170	1	2
+510	170	13	3
+511	171	14	1
+512	171	5	2
+513	171	1	3
+514	172	14	1
+515	172	2	2
+516	172	4	3
+517	173	15	1
+518	173	4	2
+519	173	14	3
+520	174	13	1
+521	174	2	2
+522	174	12	3
+523	175	11	1
+524	175	5	2
+525	175	16	3
+526	176	12	1
+527	176	0	2
+528	176	8	3
+529	177	14	1
+530	177	1	2
+531	177	3	3
+532	178	10	1
+533	178	0	2
+534	178	14	3
+535	179	10	1
+536	179	0	2
+537	179	8	3
+538	180	13	1
+539	180	-9	2
+540	180	1	3
+541	181	13	1
+542	181	1	2
+543	181	17	3
+544	182	14	1
+545	182	5	2
+546	182	6	3
+547	183	12	1
+548	183	5	2
+549	183	12	3
+550	184	12	1
+551	184	5	2
+552	184	9	3
+553	185	14	1
+554	185	5	2
+555	185	12	3
+556	186	12	1
+557	186	0	2
+558	186	9	3
+559	187	13	1
+560	187	5	2
+561	187	12	3
+562	188	13	1
+563	188	3	2
+564	188	11	3
+565	189	13	1
+566	189	3	2
+567	189	16	3
+568	190	14	1
+569	190	4	2
+570	190	6	3
+571	191	10	1
+572	191	4	2
+573	191	11	3
+574	192	13	1
+575	192	2	2
+576	192	2	3
+577	193	12	1
+578	193	4	2
+579	193	5	3
+580	194	13	1
+581	194	3	2
+582	194	13	3
+583	195	15	1
+584	195	2	2
+585	195	8	3
+586	196	12	1
+587	196	5	2
+588	196	15	3
+589	197	14	1
+590	197	3	2
+591	197	2	3
+592	198	15	1
+593	198	-2	2
+594	198	12	3
+595	199	15	1
+596	199	5	2
+597	199	7	3
+598	200	12	1
+599	200	2	2
+600	200	5	3
+601	201	11	1
+602	201	4	2
+603	201	2	3
+604	202	11	1
+605	202	0	2
+606	202	14	3
+607	203	14	1
+608	203	0	2
+609	203	0	3
+610	204	12	1
+611	204	5	2
+612	204	13	3
+613	205	15	1
+614	205	0	2
+615	205	17	3
+616	206	14	1
+617	206	1	2
+618	206	2	3
+619	207	10	1
+620	207	0	2
+621	207	13	3
+622	208	10	1
+623	208	4	2
+624	208	14	3
+625	209	13	1
+626	209	3	2
+627	209	15	3
+628	210	14	1
+629	210	5	2
+630	210	19	3
+631	211	11	1
+632	211	2	2
+633	211	2	3
+634	212	13	1
+635	212	0	2
+636	212	16	3
+637	213	11	1
+638	213	0	2
+639	213	12	3
+640	214	15	1
+641	214	0	2
+642	214	18	3
+643	215	10	1
+644	215	3	2
+645	215	14	3
+646	216	11	1
+647	216	-10	2
+648	216	19	3
+649	217	15	1
+650	217	1	2
+651	217	12	3
+652	218	12	1
+653	218	3	2
+654	218	12	3
+655	219	15	1
+656	219	2	2
+657	219	15	3
+658	220	10	1
+659	220	5	2
+660	220	14	3
+661	221	12	1
+662	221	1	2
+663	221	11	3
+664	222	14	1
+665	222	1	2
+666	222	19	3
+667	223	15	1
+668	223	3	2
+669	223	19	3
+670	224	10	1
+671	224	3	2
+672	224	17	3
+673	225	10	1
+674	225	0	2
+675	225	1	3
+676	226	11	1
+677	226	3	2
+678	226	11	3
+679	227	11	1
+680	227	1	2
+681	227	17	3
+682	228	10	1
+683	228	0	2
+684	228	6	3
+685	229	11	1
+686	229	3	2
+687	229	16	3
+688	230	12	1
+689	230	5	2
+690	230	14	3
+691	231	12	1
+692	231	2	2
+693	231	13	3
+694	232	12	1
+695	232	4	2
+696	232	9	3
+697	233	13	1
+698	233	0	2
+699	233	16	3
+700	234	10	1
+701	234	-8	2
+702	234	14	3
+703	235	10	1
+704	235	3	2
+705	235	7	3
+706	236	10	1
+707	236	1	2
+708	236	16	3
+709	237	14	1
+710	237	3	2
+711	237	19	3
+712	238	14	1
+713	238	2	2
+714	238	16	3
+715	239	11	1
+716	239	5	2
+717	239	11	3
+718	240	11	1
+719	240	1	2
+720	240	12	3
+721	241	15	1
+722	241	5	2
+723	241	4	3
+724	242	12	1
+725	242	1	2
+726	242	2	3
+727	243	15	1
+728	243	1	2
+729	243	16	3
+730	244	15	1
+731	244	2	2
+732	244	0	3
+733	245	13	1
+734	245	0	2
+735	245	14	3
+736	246	14	1
+737	246	5	2
+738	246	9	3
+739	247	12	1
+740	247	4	2
+741	247	11	3
+742	248	10	1
+743	248	3	2
+744	248	18	3
+745	249	13	1
+746	249	2	2
+747	249	2	3
+748	250	12	1
+749	250	4	2
+750	250	13	3
+751	251	13	1
+752	251	2	2
+753	251	18	3
+754	252	12	1
+755	252	-10	2
+756	252	2	3
+757	253	11	1
+758	253	0	2
+759	253	19	3
+760	254	15	1
+761	254	2	2
+762	254	4	3
+763	255	11	1
+764	255	0	2
+765	255	0	3
+766	256	12	1
+767	256	2	2
+768	256	13	3
+769	257	10	1
+770	257	3	2
+771	257	2	3
+772	258	15	1
+773	258	0	2
+774	258	14	3
+775	259	11	1
+776	259	2	2
+777	259	8	3
+778	260	13	1
+779	260	3	2
+780	260	5	3
+781	261	11	1
+782	261	1	2
+783	261	5	3
+784	262	11	1
+785	262	1	2
+786	262	9	3
+787	263	12	1
+788	263	3	2
+789	263	13	3
+790	264	13	1
+791	264	3	2
+792	264	9	3
+793	265	10	1
+794	265	5	2
+795	265	18	3
+796	266	13	1
+797	266	3	2
+798	266	8	3
+799	267	14	1
+800	267	5	2
+801	267	2	3
+802	268	12	1
+803	268	0	2
+804	268	1	3
+805	269	10	1
+806	269	0	2
+807	269	2	3
+808	270	11	1
+809	270	-7	2
+810	270	6	3
+811	271	11	1
+812	271	4	2
+813	271	13	3
+814	272	13	1
+815	272	3	2
+816	272	13	3
+817	273	15	1
+818	273	1	2
+819	273	2	3
+820	274	14	1
+821	274	5	2
+822	274	4	3
+823	275	12	1
+824	275	2	2
+825	275	9	3
+826	276	13	1
+827	276	0	2
+828	276	10	3
+829	277	13	1
+830	277	3	2
+831	277	18	3
+832	278	13	1
+833	278	2	2
+834	278	10	3
+835	279	12	1
+836	279	5	2
+837	279	16	3
+838	280	14	1
+839	280	5	2
+840	280	3	3
+841	281	10	1
+842	281	0	2
+843	281	0	3
+844	282	13	1
+845	282	3	2
+846	282	4	3
+847	283	11	1
+848	283	0	2
+849	283	11	3
+850	284	13	1
+851	284	2	2
+852	284	9	3
+853	285	12	1
+854	285	3	2
+855	285	13	3
+856	286	10	1
+857	286	5	2
+858	286	4	3
+859	287	11	1
+860	287	2	2
+861	287	4	3
+862	288	13	1
+863	288	-8	2
+864	288	0	3
+865	289	10	1
+866	289	4	2
+867	289	19	3
+868	290	13	1
+869	290	3	2
+870	290	15	3
+871	291	11	1
+872	291	0	2
+873	291	9	3
+874	292	12	1
+875	292	1	2
+876	292	11	3
+877	293	12	1
+878	293	0	2
+879	293	7	3
+880	294	12	1
+881	294	3	2
+882	294	1	3
+883	295	13	1
+884	295	1	2
+885	295	11	3
+886	296	10	1
+887	296	0	2
+888	296	10	3
+889	297	15	1
+890	297	1	2
+891	297	13	3
+892	298	13	1
+893	298	3	2
+894	298	11	3
+895	299	14	1
+896	299	5	2
+897	299	18	3
+898	300	12	1
+899	300	4	2
+900	300	14	3
+901	301	11	1
+902	301	2	2
+903	301	7	3
+904	302	13	1
+905	302	2	2
+906	302	5	3
+907	303	15	1
+908	303	4	2
+909	303	2	3
+910	304	15	1
+911	304	4	2
+912	304	11	3
+913	305	15	1
+914	305	0	2
+915	305	9	3
+916	306	12	1
+917	306	-5	2
+918	306	19	3
+919	307	12	1
+920	307	2	2
+921	307	2	3
+922	308	15	1
+923	308	3	2
+924	308	16	3
+925	309	13	1
+926	309	1	2
+927	309	13	3
+928	310	12	1
+929	310	4	2
+930	310	7	3
+931	311	15	1
+932	311	1	2
+933	311	6	3
+934	312	15	1
+935	312	5	2
+936	312	7	3
+937	313	13	1
+938	313	2	2
+939	313	11	3
+940	314	11	1
+941	314	1	2
+942	314	9	3
+943	315	14	1
+944	315	5	2
+945	315	5	3
+946	316	15	1
+947	316	0	2
+948	316	8	3
+949	317	13	1
+950	317	5	2
+951	317	9	3
+952	318	12	1
+953	318	4	2
+954	318	2	3
+955	319	14	1
+956	319	5	2
+957	319	6	3
+958	320	13	1
+959	320	0	2
+960	320	17	3
+961	321	15	1
+962	321	5	2
+963	321	5	3
+964	322	14	1
+965	322	2	2
+966	322	15	3
+967	323	14	1
+968	323	1	2
+969	323	11	3
+970	324	11	1
+971	324	-7	2
+972	324	7	3
+\.
+
+
+--
+-- Data for Name: weather_data_point_name; Type: TABLE DATA; Schema: public; Owner: phil
+--
+
+COPY weather_data_point_name (weather_data_point_name_id, weather_data_point_name_value, weather_data_point_name_unit_id) FROM stdin;
+1	high_temperature	1
+2	low_temperature	1
+3	mean_wind_speed	2
+\.
+
+
+--
+-- Name: weather_data_point_name_weather_data_point_name_id_seq; Type: SEQUENCE SET; Schema: public; Owner: phil
+--
+
+SELECT pg_catalog.setval('weather_data_point_name_weather_data_point_name_id_seq', 9, true);
+
+
+--
+-- Data for Name: weather_data_point_unit; Type: TABLE DATA; Schema: public; Owner: phil
+--
+
+COPY weather_data_point_unit (weather_data_point_unit_id, weather_data_point_unit_name) FROM stdin;
+1	celsius
+2	kilometers_per_hour
+\.
+
+
+--
+-- Name: weather_data_point_unit_weather_data_point_unit_id_seq; Type: SEQUENCE SET; Schema: public; Owner: phil
+--
+
+SELECT pg_catalog.setval('weather_data_point_unit_weather_data_point_unit_id_seq', 6, true);
+
+
+--
+-- Name: weather_data_point_weather_data_point_id_seq; Type: SEQUENCE SET; Schema: public; Owner: phil
+--
+
+SELECT pg_catalog.setval('weather_data_point_weather_data_point_id_seq', 974, true);
+
+
+--
+-- Data for Name: weather_data_type; Type: TABLE DATA; Schema: public; Owner: phil
+--
+
+COPY weather_data_type (weather_data_type_id, weather_data_type_name) FROM stdin;
+1	actual
+2	forecast_1_day_out
+3	forecast_2_days_out
+4	forecast_3_days_out
+5	forecast_4_days_out
+6	forecast_5_days_out
+\.
+
+
+--
+-- Name: weather_data_type_weather_data_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: phil
+--
+
+SELECT pg_catalog.setval('weather_data_type_weather_data_type_id_seq', 10, true);
+
+
+--
+-- Name: weather_data_weather_data_id_seq; Type: SEQUENCE SET; Schema: public; Owner: phil
+--
+
+SELECT pg_catalog.setval('weather_data_weather_data_id_seq', 355, true);
+
+
+--
+-- Data for Name: weather_date; Type: TABLE DATA; Schema: public; Owner: phil
+--
+
+COPY weather_date (weather_date_id, weather_date_value) FROM stdin;
+1	2015-01-01
+2	2015-01-02
+3	2015-01-03
+4	2015-01-04
+5	2015-01-05
+6	2015-01-06
+171	2015-03-10
+172	2015-03-09
+173	2015-03-11
+174	2015-03-12
+175	2015-03-13
+176	2015-03-14
+177	2015-03-15
+\.
+
+
+--
+-- Name: weather_date_weather_date_id_seq; Type: SEQUENCE SET; Schema: public; Owner: phil
+--
+
+SELECT pg_catalog.setval('weather_date_weather_date_id_seq', 177, true);
+
+
+--
+-- Data for Name: weather_location; Type: TABLE DATA; Schema: public; Owner: phil
+--
+
+COPY weather_location (weather_location_id, weather_location_latitude, weather_location_longitude, weather_location_name) FROM stdin;
+1	37.935758	-122.347749	Richmond, CA
+2	41.878114	-87.629798	Chicago, IL
+3	40.712784	-74.005941	New York, NY
+\.
+
+
+--
+-- Name: weather_location_weather_location_id_seq; Type: SEQUENCE SET; Schema: public; Owner: phil
+--
+
+SELECT pg_catalog.setval('weather_location_weather_location_id_seq', 10, true);
+
+
+--
+-- Data for Name: weather_source; Type: TABLE DATA; Schema: public; Owner: phil
+--
+
+COPY weather_source (weather_source_id, weather_source_name) FROM stdin;
+1	weather_underground
+2	open_weather_map
+3	yahoo_weather
+\.
+
+
+--
+-- Name: weather_source_weather_source_id_seq; Type: SEQUENCE SET; Schema: public; Owner: phil
+--
+
+SELECT pg_catalog.setval('weather_source_weather_source_id_seq', 7, true);
+
+
+--
+-- Name: weather_data_id_point_name_key; Type: CONSTRAINT; Schema: public; Owner: phil; Tablespace: 
+--
+
+ALTER TABLE ONLY weather_data_point
+    ADD CONSTRAINT weather_data_id_point_name_key UNIQUE (weather_data_point_data_id, weather_data_point_name_id);
+
+
+--
+-- Name: weather_data_pkey; Type: CONSTRAINT; Schema: public; Owner: phil; Tablespace: 
+--
+
+ALTER TABLE ONLY weather_data
+    ADD CONSTRAINT weather_data_pkey PRIMARY KEY (weather_data_id);
+
+
+--
+-- Name: weather_data_point_name_pkey; Type: CONSTRAINT; Schema: public; Owner: phil; Tablespace: 
+--
+
+ALTER TABLE ONLY weather_data_point_name
+    ADD CONSTRAINT weather_data_point_name_pkey PRIMARY KEY (weather_data_point_name_id);
+
+
+--
+-- Name: weather_data_point_name_weather_data_point_name_value_key; Type: CONSTRAINT; Schema: public; Owner: phil; Tablespace: 
+--
+
+ALTER TABLE ONLY weather_data_point_name
+    ADD CONSTRAINT weather_data_point_name_weather_data_point_name_value_key UNIQUE (weather_data_point_name_value);
+
+
+--
+-- Name: weather_data_point_pkey; Type: CONSTRAINT; Schema: public; Owner: phil; Tablespace: 
+--
+
+ALTER TABLE ONLY weather_data_point
+    ADD CONSTRAINT weather_data_point_pkey PRIMARY KEY (weather_data_point_id);
+
+
+--
+-- Name: weather_data_point_unit_name_key; Type: CONSTRAINT; Schema: public; Owner: phil; Tablespace: 
+--
+
+ALTER TABLE ONLY weather_data_point_unit
+    ADD CONSTRAINT weather_data_point_unit_name_key UNIQUE (weather_data_point_unit_name);
+
+
+--
+-- Name: weather_data_point_unit_pkey; Type: CONSTRAINT; Schema: public; Owner: phil; Tablespace: 
+--
+
+ALTER TABLE ONLY weather_data_point_unit
+    ADD CONSTRAINT weather_data_point_unit_pkey PRIMARY KEY (weather_data_point_unit_id);
+
+
+--
+-- Name: weather_data_type_name_key; Type: CONSTRAINT; Schema: public; Owner: phil; Tablespace: 
+--
+
+ALTER TABLE ONLY weather_data_type
+    ADD CONSTRAINT weather_data_type_name_key UNIQUE (weather_data_type_name);
+
+
+--
+-- Name: weather_data_type_pkey; Type: CONSTRAINT; Schema: public; Owner: phil; Tablespace: 
+--
+
+ALTER TABLE ONLY weather_data_type
+    ADD CONSTRAINT weather_data_type_pkey PRIMARY KEY (weather_data_type_id);
+
+
+--
+-- Name: weather_data_type_source_date_location_key; Type: CONSTRAINT; Schema: public; Owner: phil; Tablespace: 
+--
+
+ALTER TABLE ONLY weather_data
+    ADD CONSTRAINT weather_data_type_source_date_location_key UNIQUE (weather_data_type_id, weather_data_source_id, weather_data_date_id, weather_data_location_id);
+
+
+--
+-- Name: weather_date_pkey; Type: CONSTRAINT; Schema: public; Owner: phil; Tablespace: 
+--
+
+ALTER TABLE ONLY weather_date
+    ADD CONSTRAINT weather_date_pkey PRIMARY KEY (weather_date_id);
+
+
+--
+-- Name: weather_date_value_key; Type: CONSTRAINT; Schema: public; Owner: phil; Tablespace: 
+--
+
+ALTER TABLE ONLY weather_date
+    ADD CONSTRAINT weather_date_value_key UNIQUE (weather_date_value);
+
+
+--
+-- Name: weather_location_latitude_longitude_key; Type: CONSTRAINT; Schema: public; Owner: phil; Tablespace: 
+--
+
+ALTER TABLE ONLY weather_location
+    ADD CONSTRAINT weather_location_latitude_longitude_key UNIQUE (weather_location_latitude, weather_location_longitude);
+
+
+--
+-- Name: weather_location_pkey; Type: CONSTRAINT; Schema: public; Owner: phil; Tablespace: 
+--
+
+ALTER TABLE ONLY weather_location
+    ADD CONSTRAINT weather_location_pkey PRIMARY KEY (weather_location_id);
+
+
+--
+-- Name: weather_source_name_key; Type: CONSTRAINT; Schema: public; Owner: phil; Tablespace: 
+--
+
+ALTER TABLE ONLY weather_source
+    ADD CONSTRAINT weather_source_name_key UNIQUE (weather_source_name);
+
+
+--
+-- Name: weather_source_pkey; Type: CONSTRAINT; Schema: public; Owner: phil; Tablespace: 
+--
+
+ALTER TABLE ONLY weather_source
+    ADD CONSTRAINT weather_source_pkey PRIMARY KEY (weather_source_id);
+
+
+--
+-- Name: weather_data_point_name_weather_data_point_name_unit_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: phil
+--
+
+ALTER TABLE ONLY weather_data_point_name
+    ADD CONSTRAINT weather_data_point_name_weather_data_point_name_unit_id_fkey FOREIGN KEY (weather_data_point_name_unit_id) REFERENCES weather_data_point_unit(weather_data_point_unit_id);
+
+
+--
+-- Name: weather_data_point_weather_data_point_data_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: phil
+--
+
+ALTER TABLE ONLY weather_data_point
+    ADD CONSTRAINT weather_data_point_weather_data_point_data_id_fkey FOREIGN KEY (weather_data_point_data_id) REFERENCES weather_data(weather_data_id);
+
+
+--
+-- Name: weather_data_point_weather_data_point_name_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: phil
+--
+
+ALTER TABLE ONLY weather_data_point
+    ADD CONSTRAINT weather_data_point_weather_data_point_name_id_fkey FOREIGN KEY (weather_data_point_name_id) REFERENCES weather_data_point_name(weather_data_point_name_id);
+
+
+--
+-- Name: weather_data_weather_data_date_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: phil
+--
+
+ALTER TABLE ONLY weather_data
+    ADD CONSTRAINT weather_data_weather_data_date_id_fkey FOREIGN KEY (weather_data_date_id) REFERENCES weather_date(weather_date_id);
+
+
+--
+-- Name: weather_data_weather_data_location_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: phil
+--
+
+ALTER TABLE ONLY weather_data
+    ADD CONSTRAINT weather_data_weather_data_location_id_fkey FOREIGN KEY (weather_data_location_id) REFERENCES weather_location(weather_location_id);
+
+
+--
+-- Name: weather_data_weather_data_source_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: phil
+--
+
+ALTER TABLE ONLY weather_data
+    ADD CONSTRAINT weather_data_weather_data_source_id_fkey FOREIGN KEY (weather_data_source_id) REFERENCES weather_source(weather_source_id);
+
+
+--
+-- Name: weather_data_weather_data_type_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: phil
+--
+
+ALTER TABLE ONLY weather_data
+    ADD CONSTRAINT weather_data_weather_data_type_id_fkey FOREIGN KEY (weather_data_type_id) REFERENCES weather_data_type(weather_data_type_id);
+
+
+--
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- Name: weather_data; Type: ACL; Schema: public; Owner: phil
+--
+
+REVOKE ALL ON TABLE weather_data FROM PUBLIC;
+REVOKE ALL ON TABLE weather_data FROM phil;
+GRANT ALL ON TABLE weather_data TO phil;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE weather_data TO weather_accuracy_test;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE weather_data TO test;
+
+
+--
+-- Name: weather_data_point; Type: ACL; Schema: public; Owner: phil
+--
+
+REVOKE ALL ON TABLE weather_data_point FROM PUBLIC;
+REVOKE ALL ON TABLE weather_data_point FROM phil;
+GRANT ALL ON TABLE weather_data_point TO phil;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE weather_data_point TO weather_accuracy_test;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE weather_data_point TO test;
+
+
+--
+-- Name: weather_data_point_name; Type: ACL; Schema: public; Owner: phil
+--
+
+REVOKE ALL ON TABLE weather_data_point_name FROM PUBLIC;
+REVOKE ALL ON TABLE weather_data_point_name FROM phil;
+GRANT ALL ON TABLE weather_data_point_name TO phil;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE weather_data_point_name TO weather_accuracy_test;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE weather_data_point_name TO test;
+
+
+--
+-- Name: weather_data_point_name_weather_data_point_name_id_seq; Type: ACL; Schema: public; Owner: phil
+--
+
+REVOKE ALL ON SEQUENCE weather_data_point_name_weather_data_point_name_id_seq FROM PUBLIC;
+REVOKE ALL ON SEQUENCE weather_data_point_name_weather_data_point_name_id_seq FROM phil;
+GRANT ALL ON SEQUENCE weather_data_point_name_weather_data_point_name_id_seq TO phil;
+GRANT SELECT,UPDATE ON SEQUENCE weather_data_point_name_weather_data_point_name_id_seq TO weather_accuracy_test;
+GRANT SELECT,UPDATE ON SEQUENCE weather_data_point_name_weather_data_point_name_id_seq TO test;
+
+
+--
+-- Name: weather_data_point_unit; Type: ACL; Schema: public; Owner: phil
+--
+
+REVOKE ALL ON TABLE weather_data_point_unit FROM PUBLIC;
+REVOKE ALL ON TABLE weather_data_point_unit FROM phil;
+GRANT ALL ON TABLE weather_data_point_unit TO phil;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE weather_data_point_unit TO weather_accuracy_test;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE weather_data_point_unit TO test;
+
+
+--
+-- Name: weather_data_point_unit_weather_data_point_unit_id_seq; Type: ACL; Schema: public; Owner: phil
+--
+
+REVOKE ALL ON SEQUENCE weather_data_point_unit_weather_data_point_unit_id_seq FROM PUBLIC;
+REVOKE ALL ON SEQUENCE weather_data_point_unit_weather_data_point_unit_id_seq FROM phil;
+GRANT ALL ON SEQUENCE weather_data_point_unit_weather_data_point_unit_id_seq TO phil;
+GRANT SELECT ON SEQUENCE weather_data_point_unit_weather_data_point_unit_id_seq TO schemaspy;
+GRANT SELECT,UPDATE ON SEQUENCE weather_data_point_unit_weather_data_point_unit_id_seq TO weather_accuracy_test;
+GRANT SELECT,UPDATE ON SEQUENCE weather_data_point_unit_weather_data_point_unit_id_seq TO test;
+
+
+--
+-- Name: weather_data_point_weather_data_point_id_seq; Type: ACL; Schema: public; Owner: phil
+--
+
+REVOKE ALL ON SEQUENCE weather_data_point_weather_data_point_id_seq FROM PUBLIC;
+REVOKE ALL ON SEQUENCE weather_data_point_weather_data_point_id_seq FROM phil;
+GRANT ALL ON SEQUENCE weather_data_point_weather_data_point_id_seq TO phil;
+GRANT SELECT ON SEQUENCE weather_data_point_weather_data_point_id_seq TO schemaspy;
+GRANT SELECT,UPDATE ON SEQUENCE weather_data_point_weather_data_point_id_seq TO weather_accuracy_test;
+GRANT SELECT,UPDATE ON SEQUENCE weather_data_point_weather_data_point_id_seq TO test;
+
+
+--
+-- Name: weather_data_type; Type: ACL; Schema: public; Owner: phil
+--
+
+REVOKE ALL ON TABLE weather_data_type FROM PUBLIC;
+REVOKE ALL ON TABLE weather_data_type FROM phil;
+GRANT ALL ON TABLE weather_data_type TO phil;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE weather_data_type TO weather_accuracy_test;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE weather_data_type TO test;
+
+
+--
+-- Name: weather_data_type_weather_data_type_id_seq; Type: ACL; Schema: public; Owner: phil
+--
+
+REVOKE ALL ON SEQUENCE weather_data_type_weather_data_type_id_seq FROM PUBLIC;
+REVOKE ALL ON SEQUENCE weather_data_type_weather_data_type_id_seq FROM phil;
+GRANT ALL ON SEQUENCE weather_data_type_weather_data_type_id_seq TO phil;
+GRANT SELECT ON SEQUENCE weather_data_type_weather_data_type_id_seq TO schemaspy;
+GRANT SELECT,UPDATE ON SEQUENCE weather_data_type_weather_data_type_id_seq TO weather_accuracy_test;
+GRANT SELECT,UPDATE ON SEQUENCE weather_data_type_weather_data_type_id_seq TO test;
+
+
+--
+-- Name: weather_data_weather_data_id_seq; Type: ACL; Schema: public; Owner: phil
+--
+
+REVOKE ALL ON SEQUENCE weather_data_weather_data_id_seq FROM PUBLIC;
+REVOKE ALL ON SEQUENCE weather_data_weather_data_id_seq FROM phil;
+GRANT ALL ON SEQUENCE weather_data_weather_data_id_seq TO phil;
+GRANT SELECT ON SEQUENCE weather_data_weather_data_id_seq TO schemaspy;
+GRANT SELECT,UPDATE ON SEQUENCE weather_data_weather_data_id_seq TO weather_accuracy_test;
+GRANT SELECT,UPDATE ON SEQUENCE weather_data_weather_data_id_seq TO test;
+
+
+--
+-- Name: weather_date; Type: ACL; Schema: public; Owner: phil
+--
+
+REVOKE ALL ON TABLE weather_date FROM PUBLIC;
+REVOKE ALL ON TABLE weather_date FROM phil;
+GRANT ALL ON TABLE weather_date TO phil;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE weather_date TO weather_accuracy_test;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE weather_date TO test;
+
+
+--
+-- Name: weather_date_weather_date_id_seq; Type: ACL; Schema: public; Owner: phil
+--
+
+REVOKE ALL ON SEQUENCE weather_date_weather_date_id_seq FROM PUBLIC;
+REVOKE ALL ON SEQUENCE weather_date_weather_date_id_seq FROM phil;
+GRANT ALL ON SEQUENCE weather_date_weather_date_id_seq TO phil;
+GRANT SELECT ON SEQUENCE weather_date_weather_date_id_seq TO schemaspy;
+GRANT SELECT,UPDATE ON SEQUENCE weather_date_weather_date_id_seq TO weather_accuracy_test;
+GRANT SELECT,UPDATE ON SEQUENCE weather_date_weather_date_id_seq TO test;
+
+
+--
+-- Name: weather_location; Type: ACL; Schema: public; Owner: phil
+--
+
+REVOKE ALL ON TABLE weather_location FROM PUBLIC;
+REVOKE ALL ON TABLE weather_location FROM phil;
+GRANT ALL ON TABLE weather_location TO phil;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE weather_location TO weather_accuracy_test;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE weather_location TO test;
+
+
+--
+-- Name: weather_location_weather_location_id_seq; Type: ACL; Schema: public; Owner: phil
+--
+
+REVOKE ALL ON SEQUENCE weather_location_weather_location_id_seq FROM PUBLIC;
+REVOKE ALL ON SEQUENCE weather_location_weather_location_id_seq FROM phil;
+GRANT ALL ON SEQUENCE weather_location_weather_location_id_seq TO phil;
+GRANT SELECT,UPDATE ON SEQUENCE weather_location_weather_location_id_seq TO weather_accuracy_test;
+GRANT SELECT,UPDATE ON SEQUENCE weather_location_weather_location_id_seq TO test;
+
+
+--
+-- Name: weather_source; Type: ACL; Schema: public; Owner: phil
+--
+
+REVOKE ALL ON TABLE weather_source FROM PUBLIC;
+REVOKE ALL ON TABLE weather_source FROM phil;
+GRANT ALL ON TABLE weather_source TO phil;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE weather_source TO weather_accuracy_test;
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE weather_source TO test;
+
+
+--
+-- Name: weather_source_weather_source_id_seq; Type: ACL; Schema: public; Owner: phil
+--
+
+REVOKE ALL ON SEQUENCE weather_source_weather_source_id_seq FROM PUBLIC;
+REVOKE ALL ON SEQUENCE weather_source_weather_source_id_seq FROM phil;
+GRANT ALL ON SEQUENCE weather_source_weather_source_id_seq TO phil;
+GRANT SELECT ON SEQUENCE weather_source_weather_source_id_seq TO schemaspy;
+GRANT SELECT,UPDATE ON SEQUENCE weather_source_weather_source_id_seq TO weather_accuracy_test;
+GRANT SELECT,UPDATE ON SEQUENCE weather_source_weather_source_id_seq TO test;
+
+
+--
+-- PostgreSQL database dump complete
+--
+

@@ -1,0 +1,148 @@
+{
+    "error": null,
+    "response": [
+        {
+            "id": "KOAK",
+            "loc": {
+                "lat": 37.716666666667,
+                "long": -122.23333333333
+            },
+            "periods": [
+                {
+                    "summary": {
+                        "QC": {
+                            "count": 0,
+                            "max": null,
+                            "min": null,
+                            "types": [
+                                null
+                            ]
+                        },
+                        "dateTimeISO": "2015-03-15T00:00:00-07:00",
+                        "dewpt": {
+                            "avgC": 8.5,
+                            "avgF": 47.2,
+                            "count": 24,
+                            "maxC": 12,
+                            "maxF": 54,
+                            "minC": 5,
+                            "minF": 41
+                        },
+                        "precip": {
+                            "QC": "G",
+                            "QCcode": 10,
+                            "count": 0,
+                            "method": "sum",
+                            "totalIN": 0,
+                            "totalMM": 0,
+                            "trace": false,
+                            "traceCount": 0
+                        },
+                        "pressure": {
+                            "avgIN": 30.04,
+                            "avgMB": 1017.3,
+                            "count": 24,
+                            "maxIN": 30.09,
+                            "maxMB": 1019,
+                            "minIN": 29.97,
+                            "minMB": 1015
+                        },
+                        "range": {
+                            "count": 24,
+                            "maxDateTimeISO": "2015-03-15T23:53:00-07:00",
+                            "maxTimestamp": 1426488780,
+                            "minDateTimeISO": "2015-03-15T00:53:00-07:00",
+                            "minTimestamp": 1426405980
+                        },
+                        "rh": {
+                            "avg": 58,
+                            "count": 24,
+                            "max": 82,
+                            "min": 40
+                        },
+                        "sky": {
+                            "avg": 85,
+                            "coded": [
+                                "BK",
+                                "OV"
+                            ],
+                            "count": 24,
+                            "max": 100,
+                            "min": 81
+                        },
+                        "solrad": {
+                            "avgWM2": null,
+                            "count": 0,
+                            "maxWM2": null,
+                            "minWM2": null
+                        },
+                        "spressure": {
+                            "avgIN": 29.95,
+                            "avgMB": 1014.3,
+                            "count": 24,
+                            "maxIN": 30,
+                            "maxMB": 1016,
+                            "minIN": 29.88,
+                            "minMB": 1012
+                        },
+                        "temp": {
+                            "avgC": 17,
+                            "avgF": 62.6,
+                            "count": 24,
+                            "maxC": 21,
+                            "maxF": 70,
+                            "minC": 13,
+                            "minF": 55
+                        },
+                        "timestamp": 1426402800,
+                        "visibility": {
+                            "avgKM": 16.1,
+                            "avgMI": 10,
+                            "count": 24,
+                            "maxKM": 16,
+                            "maxMI": 10,
+                            "minKM": 16,
+                            "minMI": 10
+                        },
+                        "weather": {
+                            "coded": null,
+                            "count": 0,
+                            "icon": "mcloudy.png",
+                            "phrase": "Mostly Cloudy",
+                            "primary": "Mostly Cloudy",
+                            "primaryCoded": "::BK"
+                        },
+                        "wind": {
+                            "avgKPH": 8.7,
+                            "avgKTS": 4.7,
+                            "avgMPH": 5.4,
+                            "count": 24,
+                            "gustKPH": null,
+                            "gustKTS": null,
+                            "gustMPH": null,
+                            "maxKPH": 24,
+                            "maxKTS": 13,
+                            "maxMPH": 15,
+                            "minKPH": 0,
+                            "minKTS": 0,
+                            "minMPH": 0
+                        },
+                        "ymd": 20150315
+                    }
+                }
+            ],
+            "place": {
+                "country": "us",
+                "name": "oakland",
+                "state": "ca"
+            },
+            "profile": {
+                "elevFT": 85,
+                "elevM": 26,
+                "hasPrecip": true,
+                "tz": "America/Los_Angeles"
+            }
+        }
+    ],
+    "success": true
+}

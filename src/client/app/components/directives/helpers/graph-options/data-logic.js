@@ -30,10 +30,11 @@ var bRequest = new nh.BRequest()
 // Constructor //
 //-------------//
 
-function DataLogic(state, handles, constants) {
+function DataLogic(state, handles, constants, scope) {
     this.state = state;
     this.handles = handles;
     this.constants = constants;
+    this.scope = scope;
 }
 
 
@@ -42,13 +43,36 @@ function DataLogic(state, handles, constants) {
 //--------------------//
 
 DataLogic.prototype.updateGraphData = function updateGraphData() {
-    var log = this.handles.log
-        , pickerFrom = this.handles.pickerFrom
-        , pickerTo = this.handles.pickerTo
-        , interactiveGraphCtrl = this.handles.interactiveGraphCtrl
-        , state = this.state
-        , API = this.constants.API;
+    var self = this;
+    var log = self.handles.log
+        , pickerFrom = self.handles.pickerFrom
+        , pickerTo = self.handles.pickerTo
+        , interactiveGraphCtrl = self.handles.interactiveGraphCtrl
+        , state = self.state
+        , API = self.constants.API;
 
+    // validate input
+    var daysDiff = Math.abs(pickerFrom.getMoment().diff(pickerTo.getMoment(), 'days'));
+    if (daysDiff > 31) {
+        self.scope.$applyAsync(function() {
+            var from = pickerFrom.getMoment().format('YYYY-MM-DD')
+                , to = pickerTo.getMoment().format('YYYY-MM-DD');
+
+            self.scope.errorMsg = 'The chosen dates: ' + from + ' to ' + to + ' are more than 31 days apart.';
+            $('#datepicker-from').addClass('error');
+            $('#datepicker-to').addClass('error');
+        });
+        return;
+    } else {
+        // remove any previous errors
+        $('#datepicker-from').removeClass('error');
+        $('#datepicker-to').removeClass('error');
+
+        // start loading gif
+        $('graph-options input[type="submit"]').after('<img src="../img/loading.gif" class="status loading">');
+    }
+
+    // input is valid
     log.debug('updating graph data');
     var fromMoment = moment(pickerFrom.getDate());
     var fromDate = fromMoment.format('YYYYMMDD');

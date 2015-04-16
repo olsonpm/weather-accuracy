@@ -1,2 +1,6 @@
 node_modules
 npm-debug.log
+dev
+test
+prod
+src/client/app/templates.js

@@ -19,8 +19,8 @@ $m_help-margin: round($max-size * 0.01 * $tmp) * 1px;
 // Directive Colors //
 //------------------//
 
-$line-actual-stroke: #178FE5;
-$forecasted-stroke: #FF8000;
+$line-actual-stroke: $tertiary;
+$forecasted-stroke: $secondary-lighter-lv2;
 
 
 //-----//
@@ -28,8 +28,12 @@ $forecasted-stroke: #FF8000;
 //-----//
 
 graphs {
-	display: block;
+	display: none;
 	font-size: $font-lv6;
+	
+	&.loaded {
+		display: block;
+	}
 	
 	h2 {
 		margin-bottom: $h1-vert-margin;
@@ -54,6 +58,9 @@ graphs {
 	}
 
 	.legend {
+		h3 {
+			margin-bottom: $h3-vert-margin;
+		}
 		svg {
 			vertical-align: top;
 		}
@@ -83,7 +90,7 @@ graphs {
 		.axis path
 		, .axis line {
 			fill: none;
-			stroke: #000;
+			stroke: $primary;
 			shape-rendering: crispEdges;
 		}
 		
@@ -147,6 +154,10 @@ graphs {
 		}
 		h3 {
 			margin-bottom: $m_h2-vert-margin;
+		}
+		
+		.legend h3 {
+			margin-bottom: $m_h3-vert-margin;
 		}
 		
 		.sources > ul > li

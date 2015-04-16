@@ -1,4 +1,4 @@
-<form class="dialog {{ initialState }} retractable" ng-submit="dataLogicInst.updateGraphData()" ng-novalidate>
+<form class="dialog {{ initialState }} retractable" ng-novalidate>
   <div class="title">
     <h3>Graph Options</h3>
     <!---
@@ -24,6 +24,9 @@
     <div class="row">
       <label for="choose-location">Location</label>
       <select id="choose-location"></select>
+    </div>
+    <div ng-show="errorMsg" class="error">
+      {{ errorMsg }}
     </div>
     <div class="row">
       <input type="submit" value="Submit">

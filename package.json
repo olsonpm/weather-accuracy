@@ -25,6 +25,12 @@
         "angular"
       ],
       "exports": "angular.module('ngRoute').name"
+    },
+    "imagesloaded": {
+      "depends": [
+        "jquery: jQuery"
+      ],
+      "exports": "imagesloaded"
     }
   },
   "dependencies": {
@@ -45,6 +51,7 @@
     "gsap": "^1.15.1",
     "gulp-angular-templatecache": "^1.5.0",
     "hoverintent-jqplugin": "^0.1.2",
+    "imagesloaded": "^3.1.8",
     "jquery": "^2.1.3",
     "lambda-js": "^0.1.5",
     "lodash": "^3.5.0",

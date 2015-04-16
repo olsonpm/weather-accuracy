@@ -9,15 +9,19 @@ var d3 = require('d3')
     , nh = require('node-helpers')
     , moment = require('moment')
     , roundn = require('compute-roundn')
-    , $ = require('jquery');
+    , $ = require('jquery')
+    , TweenLite = require('TweenLite');
 
 
 //------//
 // Init //
 //------//
 
-var envInst = new nh.Environment();
+var envInst = new nh.Environment()
+    , gsapd = nh.gsapDefaults(window);
+
 require('fancybox')($);
+require('imagesloaded'); // will attach itself to the window.jQuery object.
 
 // (should correspond to sass variable)
 var MAX_SIZE = 525;
@@ -30,9 +34,12 @@ var GRAPH_HEIGHT = 70;
 
 module.exports = function(app, log) {
     app.directive('graphs', function() {
-        var linkFn = function(scope, element, attrs) {
+        var linkFn = function(scope, element, attrs, interactiveGraphCtrl) {
             log.debug('graph linked');
             initiateHelpers();
+
+            var elementWidth = parseInt(element.addClass('loaded').css('width'), 10);
+            element.removeClass('loaded');
 
             // data comes in the following format
             // newData{SourceID}
@@ -50,7 +57,7 @@ module.exports = function(app, log) {
             var translateY = roundn(commonMargin / 3, 0);
             var aggregateBarWidth = calculateResponsiveLength(10);
 
-            var width = parseInt(element.css('width'), 10) - (leftMargin + commonMargin);
+            var width = elementWidth - (leftMargin + commonMargin);
             var height = calculateResponsiveLength(GRAPH_HEIGHT) - (commonMargin * 2);
 
             var parseDate = d3.time.format("%Y%m%d").parse;
@@ -94,6 +101,8 @@ module.exports = function(app, log) {
 
             scope.updateGraphData = function updateGraphData(newData, sources, currentMeasurementName, currentType, moments) {
                 log.debug("graph's updateGraphData called");
+                element.addClass('loaded');
+
                 scope.$applyAsync(function() {
                     scope.measurement = currentMeasurementName.NiceValue();
                     scope.from = moments.from.format('MMMM Do');
@@ -187,13 +196,6 @@ module.exports = function(app, log) {
                         return $(a).css('width') < $(b).css('width');
                     }).eq(0).css('width'), 10) / 2, 0);
 
-                    // even out the widths - the following is a hack until I modify the jquery plugin
-                    element.find('.sources > .legend > .content').setChildWidths('.row');
-
-                    element.find('.sources > .legend > .content svg')
-                        .attr('width', hackWidth + 'px')
-                        .css('width', hackWidth + 'px');
-
                     // now create the graphs
                     var tmpGraphContainer;
 
@@ -262,14 +264,14 @@ module.exports = function(app, log) {
                     hackWidth = roundn(parseInt(element.find('.sources > .legend > .content .label').sort(function(a, b) {
                         return $(a).css('width') > $(b).css('width');
                     }).eq(0).css('width'), 10) / 2, 0);
-
-                    // even out the widths - the following is a hack until I modify the jquery plugin
-                    element.find('.sources > .legend > .content').setChildWidths('.row');
-
-                    element.find('.sources > .legend > .content svg')
-                        .attr('width', hackWidth + 'px')
-                        .css('width', hackWidth + 'px');
                 }
+
+                // finalize (even out) the widths - the following is a hack until I modify the jquery plugin
+                element.find('.sources > .legend > .content').setChildWidths('.row');
+
+                element.find('.sources > .legend > .content svg')
+                    .attr('width', hackWidth + 'px')
+                    .css('width', hackWidth + 'px');
 
                 // y-axis should be the same for all sources
                 var allData = [];
@@ -428,6 +430,23 @@ module.exports = function(app, log) {
                     .attr('x',-roundn(height / 2, 0))
                     .attr('y',-roundn(leftMargin / 2, 0))
                     .text('Total Difference in ' + currentMeasurementName.Symbol());
+
+                // stop loading status, start finished status.  Not dealing with errors since this is just a side project
+                var status = $('graph-options .status.loading')
+                    .removeClass('loading')
+                    .addClass('finished')
+                    .attr('src', '../img/check_mark.png');
+
+                interactiveGraphCtrl.setOptionsSubmitEnabled(true);
+
+                TweenLite.to(status, 5, {
+                    opacity: '0'
+                    , delay: 1.2
+                    , ease: gsapd.EASE
+                    , onComplete: function() {
+                        status.remove();
+                    }
+                });
             };
         };
 
@@ -454,18 +473,16 @@ function calculateResponsiveLength(len) {
 
 function initiateHelpers() {
     var sourcesFancyBox = $('graphs > .sources > .fancybox').eq(0);
-    sourcesFancyBox.fancybox({
-        autoSize: false, autoHeight: true
-    });
     $('graphs > .sources > h2 > .help').click(function() {
-        sourcesFancyBox.click();
+        $.fancybox.open(sourcesFancyBox, {
+            autoSize: false, autoHeight: true
+        });
     });
 
     var aggregateFancyBox = $('graphs > .aggregate > .fancybox').eq(0);
-    aggregateFancyBox.fancybox({
-        autoSize: false, autoHeight: true
-    });
     $('graphs > .aggregate > h2 > .help').click(function() {
-        aggregateFancyBox.click();
+        $.fancybox.open(aggregateFancyBox, {
+            autoSize: false, autoHeight: true
+        });
     });
 }

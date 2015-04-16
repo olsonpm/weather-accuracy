@@ -59,38 +59,33 @@ function initApi(app, curEnv) {
     });
 
     app.get('/api/graph-data', function(req, res) {
-        var bDataPoints;
+        // validation
+        if (!(req.query.dateFrom && req.query.dateTo)) {
+            throw new Error("Invalid Arguments: /graph-data requires two query strings dateFrom and dateTo");
+        }
 
-        log.debug('wtf');
-        setTimeout(function() {
+        YMD.ValidateValue(req.query.dateFrom, true);
+        YMD.ValidateValue(req.query.dateTo);
+        var momentFrom = YMD.getMoment(req.query.dateFrom);
+        var momentTo = YMD.getMoment(req.query.dateTo);
 
-            // validation
-            if (!(req.query.dateFrom && req.query.dateTo)) {
-                throw new Error("Invalid Arguments: /graph-data requires two query strings dateFrom and dateTo");
-            }
-            YMD.ValidateValue(req.query.dateFrom, true);
-            YMD.ValidateValue(req.query.dateTo);
-            var momentFrom = YMD.getMoment(req.query.dateFrom);
-            var momentTo = YMD.getMoment(req.query.dateTo);
+        if (!momentFrom.isBefore(momentTo)) {
+            throw new Error("Invalid Arguments: /graph-data requires dateFrom to be before dateTo");
+        } else if (Math.abs(momentFrom.diff(momentTo, 'days')) > 31) {
+            throw new Error("Invalid Arguments: /graph-data requires the number of days between dateFrom and dateTo to be no longer than 31 days");
+        }
 
-            if (!momentFrom.isBefore(momentTo)) {
-                throw new Error("Invalid Arguments: /graph-data requires dateFrom to be before dateTo");
-            } else if (Math.abs(momentFrom.diff(momentTo, 'days')) > 31) {
-                throw new Error("Invalid Arguments: /graph-data requires the number of days between dateFrom and dateTo to be no longer than 31 days");
-            }
+        log.debug('why is this executing');
 
-            log.debug('why is this executing');
-
-            // query string is valid
-            bDataPoints = dalDataPointInst.getDataPointsBetweenDates(req.query.dateFrom, req.query.dateTo)
-                .then(function(lazyDataPoints) {
-                    var resDataPoints = lazyDataPoints.map(function(aDataPoint) {
-                            return aDataPoint.serialize();
-                        })
-                        .toArray();
-                    res.send(resDataPoints);
-                });
-        }, 5000);
+        // query string is valid
+        var bDataPoints = dalDataPointInst.getDataPointsBetweenDates(req.query.dateFrom, req.query.dateTo)
+            .then(function(lazyDataPoints) {
+                var resDataPoints = lazyDataPoints.map(function(aDataPoint) {
+                        return aDataPoint.serialize();
+                    })
+                    .toArray();
+                res.send(resDataPoints);
+            });
     });
 
     app.get('/api/locations', function(req, res) {

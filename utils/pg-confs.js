@@ -21,8 +21,9 @@ module.exports.test = new PGConf({
     , ssl: true
 });
 
+// if on heroku, then always use the DATABASE_URL environment variable
 if (e.DATABASE_URL) {
-    module.exports.prod = new PGConf({
+    module.exports.prod = module.exports.test = module.exports.dev = new PGConf({
         connString: e.DATABASE_URL
     });
 }

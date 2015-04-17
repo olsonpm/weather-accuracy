@@ -1,5 +1,6 @@
 'use strict';
 
+var nh = require('node-helpers');
 var PGConf = nh.psqlWrapper.PGConf;
 var e = process.env;
 

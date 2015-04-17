@@ -1,14 +1,21 @@
 'use strict';
 
-var PGConf = require('node-helpers').psqlWrapper.PGConf;
+var nh = require('node-helpers');
+var PGConf = nh.psqlWrapper.PGConf;
+var log = new(nh.LogProvider)().getLogger();
 var e = process.env;
+
+log.debug('e.DATABASE_URL');
+log.debug(e.DATABASE_URL);
 
 // if on heroku, then always use the DATABASE_URL environment variable
 if (e.DATABASE_URL) {
+    log.debug('got here');
     module.exports.prod = module.exports.test = module.exports.dev = new PGConf({
         connString: e.DATABASE_URL
     });
 } else {
+    log.debug('got here2');
     module.exports.dev = new PGConf({
         user: 'weather_accuracy_test'
         , database: 'weather_accuracy_test'

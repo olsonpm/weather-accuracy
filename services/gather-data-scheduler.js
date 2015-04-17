@@ -65,7 +65,7 @@ GatherDataScheduler.prototype._scheduleDayInsertions = function _scheduleDayInse
     var log = self.log;
 
     var curMoment = moment();
-    var localHourForMidnightUtc = moment(new Date(Date.UTC(curMoment.year(), curMoment.month(), curMoment.day(), 0))).hour();
+    var localHourForMidnightUtc = moment.tz(new Date(Date.UTC(curMoment.year(), curMoment.month(), curMoment.day(), 0)), 'America/New_York').hour();
 
     log.info('Local hour equal to midnight UTC: ' + localHourForMidnightUtc);
 
@@ -89,9 +89,10 @@ GatherDataScheduler.prototype._scheduleDataInsertions = function _scheduleDataIn
         , day: curMoment.day()
         , hour: 12
     };
-    var localTZ = jstz.determine().name();
 
-    log.info('local Time Zone: ' + localTZ);
+    // for now we are going to assume the eastern timezone.  Heroku's servers reported live there
+    //   and their local time zone is unfortunately UTC
+    log.info('local Time Zone (hardcoded): America/New_York');
 
     lazyLocations
         .groupBy(function(aLocation) {
@@ -99,7 +100,7 @@ GatherDataScheduler.prototype._scheduleDataInsertions = function _scheduleDataIn
         })
         .each(function(locationArray) {
             var locationTZ = locationArray[0].TZ();
-            var localHourForLocation = moment.tz(curDateAtNoonObj, locationTZ).tz(localTZ).hour();
+            var localHourForLocation = moment.tz(curDateAtNoonObj, locationTZ).tz('America/New_York').hour();
 
             log.info('Local hour equal to noon in ' + locationTZ + ': ' + localHourForLocation);
 

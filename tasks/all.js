@@ -170,12 +170,6 @@ var startServer = new PromiseTask()
         var port = process.env.PORT || 5000;
         app.listen(port);
         log.info(envInst.curEnv() + " server listening on port " + port);
-
-        log.info('Inserting current dates and starting the data gathering scheduler');
-        var pgWrapInst = confs[envInst.curEnv()].GeneratePGWrapper();
-        insertDates(pgWrapInst);
-        var gds = new GatherDataScheduler(pgWrapInst, envInst);
-        gds.startScheduler();
     });
 
 var buildThenStartServer = new PromiseTask()

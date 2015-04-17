@@ -33,7 +33,7 @@ psql ${connectToDb} -1 -c "\
 # Insert test data
 if [ -f ./test-data/insert-all-test-data.sh ]; then
 	printf "inserting all test data\n"
-	./test-data/insert-all-test-data.sh
+	./test-data/insert-all-test-data.sh 'weather_accuracy_test'
 fi
 
 ms2=$(date '+%s%2N')

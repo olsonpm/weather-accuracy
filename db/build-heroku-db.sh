@@ -15,7 +15,7 @@ if [ "${env}" = "prod" ]; then
 	fi
 fi
 
-./rebuild-temp-db.sh
+./rebuild-temp-db.sh "${env}"
 if [ "$?" != "0" ]; then
 	exit 1
 fi

@@ -3,6 +3,12 @@
 
 connections=$(psql -t -c "select count(*) from pg_stat_activity where datname='weather_accuracy_temp'")
 
+if [ -z ${1+x} ]; then
+	echo "rebuild-temp-db requires the environment to bulid"
+	exit 1
+fi
+env="${1}"
+
 if [ ${connections} != "0" ]; then
 	printf "Cannot run while there are current connections to the database\n"
 	exit 1
@@ -26,10 +32,18 @@ psql ${connectToDb} -1 -c "\
 	alter default privileges in schema public grant select, update on sequences to heroku; \
 "
 
+# if we're pushing to the show environment, then we want test data
+insertDataFile=''
+if [ "${env}" = "show" ]; then
+	insertDataFile='./test-data/insert-all-test-data.sh'
+else 
+	insertDataFile='./initial-data/insert-all-initial-data.sh'
+fi
+
 # Insert initial data
-if [ -f ./initial-data/insert-all-initial-data.sh ]; then
+if [ -f "${insertDataFile}" ]; then
 	printf "inserting all initial data\n"
-	./initial-data/insert-all-initial-data.sh "weather_accuracy_temp"
+	"${insertDataFile}" "weather_accuracy_temp"
 fi
 
 ms2=$(date '+%s%2N')

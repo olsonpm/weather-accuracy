@@ -96,7 +96,7 @@ GatherHamData.prototype.downloadThenInsertData = function downloadThenInsertData
 
     var bInserts = [];
 
-    locationsArray.each(function(aLocation) {
+    locationsArray.forEach(function(aLocation) {
         var forecastUrl = 'https://api.aerisapi.com/forecasts?p=' + aLocation.Latitude() + ',' + aLocation.Longitude() + '&client_id=' + process.env.HAM_WEATHER_CONSUMER_ID + '&client_secret=' + process.env.HAM_WEATHER_CONSUMER_SECRET;
         var actualUrl = 'https://api.aerisapi.com/observations/summary/' + aLocation.Latitude() + ',' + aLocation.Longitude() + '?from=yesterday&client_id=' + process.env.HAM_WEATHER_CONSUMER_ID + '&client_secret=' + process.env.HAM_WEATHER_CONSUMER_SECRET;
 

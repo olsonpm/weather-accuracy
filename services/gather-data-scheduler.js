@@ -65,7 +65,7 @@ GatherDataScheduler.prototype._scheduleDayInsertions = function _scheduleDayInse
     var log = self.log;
 
     var curMoment = moment();
-    var localHourForMidnightUtc = moment.tz(new Date(Date.UTC(curMoment.year(), curMoment.month(), curMoment.day(), 0)), 'America/New_York').hour();
+    var localHourForMidnightUtc = moment.tz(Date.UTC(curMoment.year(), curMoment.month(), curMoment.day(), 0), 'America/New_York').hour();
 
     log.info('Local hour equal to midnight UTC: ' + localHourForMidnightUtc);
 

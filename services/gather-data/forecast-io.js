@@ -96,7 +96,7 @@ GatherFioData.prototype.downloadThenInsertData = function downloadThenInsertData
 
     var bInserts = [];
 
-    locationsArray.each(function(aLocation) {
+    locationsArray.forEach(function(aLocation) {
         var forecastUrl = 'https://api.forecast.io/forecast/' + process.env.FORECAST_IO_API_KEY + '/' + aLocation.Latitude() + ',' + aLocation.Longitude() + '?units=ca';
         var actualUrl = 'https://api.forecast.io/forecast/' + process.env.FORECAST_IO_API_KEY + '/' + aLocation.Latitude() + ',' + aLocation.Longitude() + ',' + moment(0, 'H').subtract(1, 'day').format('X') + '?units=ca';
 

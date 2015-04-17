@@ -23,7 +23,7 @@ psql ${connectToDb} -1 -f ./db-schema.out
 # Insert initial data
 if [ -f ./initial-data/insert-all-initial-data.sh ]; then
 	printf "inserting all initial data\n"
-	./initial-data/insert-all-initial-data.sh
+	./initial-data/insert-all-initial-data.sh "weather_accuracy"
 fi
 
 ms2=$(date '+%s%2N')

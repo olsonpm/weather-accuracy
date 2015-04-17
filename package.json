@@ -13,6 +13,9 @@
   "browserify": {
     "transform": "browserify-shim"
   },
+  "scripts": {
+    "start": "ptr run-task buildThenStartServer env=$WEATHER_ACCURACY_NODE_ENV"
+  },
   "browserify-shim": {
     "angular": {
       "depends": [

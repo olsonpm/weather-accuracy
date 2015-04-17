@@ -5,21 +5,21 @@ connections=$(psql -t -c "select count(*) from pg_stat_activity where datname='w
 
 if [ ${connections} != "0" ]; then
 	printf "Cannot run while there are current connections to the database\n"
-	exit 0
+	exit 1
 fi
 
 ms1=$(date '+%s%2N')
 
 psqlConnect="-h /run/postgresql/ -d weather_accuracy"
-connectToTest="-h /run/postgresql/ -d weather_accuracy_test"
+connectToDb="-h /run/postgresql/ -d weather_accuracy_test"
 psql ${psqlConnect} -c "drop database weather_accuracy_test"
 psql ${psqlConnect} -c "create database weather_accuracy_test"
 						
 
 ./generate-db-schema.sh
 
-psql ${connectToTest} -1 -f ./db-schema.out
-psql ${connectToTest} -1 -c "\
+psql ${connectToDb} -1 -f ./db-schema.out
+psql ${connectToDb} -1 -c "\
 	grant select, insert, update, delete on all tables in schema public to weather_accuracy_test; \
 	grant select, update on all sequences in schema public to weather_accuracy_test; \
 	revoke all on all tables in schema public from weather_accuracy; \

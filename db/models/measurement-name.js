@@ -199,7 +199,8 @@ MeasurementName.prototype.toString = function toString(indentLevel) {
 
     return header
         + indent + "  MeasurementNameID: " + this.MeasurementNameID() + "\n"
-        + indent + "  Value: " + this.Value() + "\n"; + indent + "  Unit: " + this.Unit().toString(indentLevel)
+        + indent + "  Value: " + this.Value() + "\n"
+        + indent + "  Unit: " + this.Unit().toString(indentLevel);
 };
 
 

@@ -22,7 +22,11 @@ var ptr = require('promise-task-runner')
     , vFs = require('vinyl-fs')
     , vTransform = require('vinyl-transform')
     , bRimraf = bPromise.promisify(require('rimraf'))
-    , bMkdirp = bPromise.promisify(require('mkdirp'));
+    , bMkdirp = bPromise.promisify(require('mkdirp'))
+    , GatherDataScheduler = require('../services/gather-data-scheduler')
+    , insertDates = require('../services/insert-dates')
+    , bunyan = require('bunyan')
+    , confs = require('../utils/pg-confs');
 
 
 //------//
@@ -33,7 +37,8 @@ var PromiseTask = ptr.PromiseTask
     , TaskDependency = ptr.TaskDependency
     , PromiseTaskContainer = ptr.PromiseTaskContainer
     , Environment = nh.Environment
-    , lazy = nh.lazyExtensions;
+    , lazy = nh.lazyExtensions
+    , LogProvider = nh.LogProvider;
 
 var srcHtml = 'src/client/index.html';
 var ENVIRONMENT_VARIABLE_DEPENDENCIES = [
@@ -41,6 +46,7 @@ var ENVIRONMENT_VARIABLE_DEPENDENCIES = [
     , 'FORECAST_IO_API_KEY'
     , 'HAM_WEATHER_CONSUMER_ID'
     , 'HAM_WEATHER_CONSUMER_SECRET'
+    , 'WEATHER_ACCURACY_NODE_ENV'
 ];
 var lrOptions = {
     host: 'localhost'
@@ -64,10 +70,10 @@ var allTasks = new PromiseTaskContainer()
 var clean = new PromiseTask()
     .id('clean')
     .task(function() {
-        var env = new Environment({
-            hardCoded: this.globalArgs().env
-        });
-        var envPath = path.join(process.cwd(), env.curEnv());
+        var envInst = new Environment()
+            .HardCoded(this.globalArgs().env);
+
+        var envPath = path.join(process.cwd(), envInst.curEnv());
         return bRimraf(envPath)
             .then(function() {
                 return bMkdirp(envPath);
@@ -93,13 +99,13 @@ var build = new PromiseTask()
     .id('build')
     .dependencies(cleanThenBuildAll)
     .task(function() {
-        var env = new Environment({
-            hardCoded: this.globalArgs().env
-        });
+        var envInst = new Environment()
+            .HardCoded(this.globalArgs().env);
+
         return streamToPromise(
             vFs.src(srcHtml)
-            .pipe(injector(env))
-            .pipe(vFs.dest(env.curEnv()))
+            .pipe(injector(envInst))
+            .pipe(vFs.dest(envInst.curEnv()))
         );
     });
 
@@ -107,9 +113,13 @@ var htmlWatch = new PromiseTask()
     .id('htmlWatch')
     .task(function() {
         var self = this;
-        var env = new Environment({
-            hardCoded: self.globalArgs().env
-        });
+
+        var envInst = new Environment()
+            .HardCoded(self.globalArgs().env);
+        var log = new LogProvider()
+            .EnvInst(envInst)
+            .getLogger();
+
         var watcher = vFs.watch(srcHtml);
         watcher.on('change', function(fpath) {
             try {
@@ -120,11 +130,11 @@ var htmlWatch = new PromiseTask()
                         http.get(lrOptions);
                     })
                     .catch(function(err) {
-                        console.log('%j', err);
+                        log.error(JSON.stringify(err, null, 4));
                     });
             } catch (e) {
-                console.log('error happened while building after change communicating to lr');
-                console.log('%j', e);
+                log.error('error happened while building after change communicating to lr');
+                log.error(JSON.stringify(e, null, 4));
             }
         });
     });
@@ -139,35 +149,39 @@ var watchAll = new PromiseTask()
         allTasks.getTask('scssWatch').run();
     });
 
-
-
 var startServer = new PromiseTask()
     .id('startServer')
     .task(function() {
-        var env = new Environment({
-            hardCoded: this.globalArgs().env
-        });
+        var envInst = new Environment()
+            .HardCoded(this.globalArgs().env);
+        var log = new LogProvider()
+            .EnvInst(envInst)
+            .getLogger();
+
         checkEnvVars();
 
         var app = express();
         app.use(compression());
 
-        app.use(express.static(path.join(env.curEnv())));
+        app.use(express.static(path.join(envInst.curEnv())));
 
-        addRoutes(app, env.curEnv(), process.cwd());
+        addRoutes(app, envInst, process.cwd());
 
         var port = process.env.PORT || 5000;
         app.listen(port);
-        console.log("" + env.curEnv() + " server listening on port " + port);
+        log.info(envInst.curEnv() + " server listening on port " + port);
+
+        log.info('Inserting current dates and starting the data gathering scheduler');
+        var pgWrapInst = confs[envInst.curEnv()].GeneratePGWrapper();
+        insertDates(pgWrapInst);
+        var gds = new GatherDataScheduler(pgWrapInst, envInst);
+        gds.startScheduler();
     });
 
 var buildThenStartServer = new PromiseTask()
     .id('buildThenStartServer')
     .task(function() {
         var self = this;
-        var env = new Environment({
-            hardCoded: this.globalArgs().env
-        });
 
         return build
             .globalArgs(self.globalArgs())
@@ -199,9 +213,9 @@ function injector(env) {
         var jsInject = "<!-- inject:js -->";
         var endInject = "<!-- endinject -->";
 
-        var indexCssRel = env.isProd()
-            ? "css/index.min.css"
-            : "css/index.css";
+        var indexCssRel = env.isDev()
+            ? "css/index.css"
+            : "css/index.min.css";
 
         var indexJsRel = env.isProd()
             ? "index.min.js"

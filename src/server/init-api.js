@@ -22,23 +22,22 @@ var DALDataPoint = require('../../db/models/dal/data-point')
     , confs = require('../../utils/pg-confs')
     , YMD = require('../../db/models/extensions/ymd')
     , moment = require('moment')
-    , nh = require('node-helpers')
-    , bunyan = require('bunyan');
+    , nh = require('node-helpers');
 
 
 //------//
 // Init //
 //------//
 
-var BunyanStreams = nh.BunyanStreams;
+var LogProvider = nh.LogProvider;
 
 
 //------//
 // Main //
 //------//
 
-function initApi(app, curEnv) {
-    var pgWrapperInst = confs[curEnv].GeneratePGWrapper()
+function initApi(app, envInst) {
+    var pgWrapperInst = confs[envInst.curEnv()].GeneratePGWrapper()
         , dalDataPointInst = new DALDataPoint(pgWrapperInst)
         , dalLocationInst = new DALLocation(pgWrapperInst)
         , dalTypeInst = new DALType(pgWrapperInst)
@@ -46,17 +45,9 @@ function initApi(app, curEnv) {
         , dalMeasurementNameInst = new DALMeasurementName(pgWrapperInst)
         , dalSourceInst = new DALSource(pgWrapperInst);
 
-    var appName = 'weatherAccuracy';
-    var bstream = BunyanStreams(appName, curEnv);
-    var log = bunyan.createLogger({
-        name: appName
-        , src: bstream.source
-        , streams: [{
-            level: bstream.level
-            , stream: bstream.stream
-            , type: bstream.type
-        }]
-    });
+    var log = new LogProvider()
+        .EnvInst(envInst)
+        .getLogger();
 
     app.get('/api/graph-data', function(req, res) {
         // validation
@@ -74,8 +65,6 @@ function initApi(app, curEnv) {
         } else if (Math.abs(momentFrom.diff(momentTo, 'days')) > 31) {
             throw new Error("Invalid Arguments: /graph-data requires the number of days between dateFrom and dateTo to be no longer than 31 days");
         }
-
-        log.debug('why is this executing');
 
         // query string is valid
         var bDataPoints = dalDataPointInst.getDataPointsBetweenDates(req.query.dateFrom, req.query.dateTo)

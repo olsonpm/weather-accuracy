@@ -42,10 +42,10 @@ var lrOptions = {
 var imgClean = new PromiseTask()
     .id('imgClean')
     .task(function() {
-        var env = new Environment({
-            hardCoded: this.globalArgs().env
-        });
-        var imgPath = path.join(process.cwd(), env.curEnv(), IMG_DIR);
+        var envInst = new Environment()
+            .HardCoded(this.globalArgs().env);
+
+        var imgPath = path.join(process.cwd(), envInst.curEnv(), IMG_DIR);
 
         return bRimraf(imgPath)
             .then(function() {
@@ -57,13 +57,12 @@ var imgBuild = new PromiseTask()
     .id('imgBuild')
     .dependencies(imgClean)
     .task(function() {
-        var env = new Environment({
-            hardCoded: this.globalArgs().env
-        });
+        var envInst = new Environment()
+            .HardCoded(this.globalArgs().env);
 
         return streamToPromise(
             vFs.src(path.join(srcImgs, '*'))
-            .pipe(vFs.dest(path.join(env.curEnv(), IMG_DIR)))
+            .pipe(vFs.dest(path.join(envInst.curEnv(), IMG_DIR)))
         );
     });
 
@@ -71,11 +70,12 @@ var imgWatch = new PromiseTask()
     .id('imgWatch')
     .task(function() {
         var self = this;
-        var env = new Environment({
-            hardCoded: this.globalArgs().env
-        });
+
+        var envInst = new Environment()
+            .HardCoded(self.globalArgs().env);
+
         var watcher = vFs.watch(path.join(srcImgs, "**/*"));
-        var destImg = path.join(env.curEnv(), IMG_DIR);
+        var destImg = path.join(envInst.curEnv(), IMG_DIR);
 
         watcher.on('change', function(fpath) {
             imgBuild

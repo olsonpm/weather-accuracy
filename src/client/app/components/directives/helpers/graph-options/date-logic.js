@@ -45,7 +45,7 @@ function DateLogic(state, handles, constants) {
         if (fromMoment.isAfter(toMoment)) {
             self.pickerTo.setDate(moment(fromMoment).add(1, 'day').toDate());
         }
-    };
+    }
 
     function dateToSelect(date) {
         var fromMoment = moment(self.pickerFrom.getDate());
@@ -54,7 +54,7 @@ function DateLogic(state, handles, constants) {
         if (toMoment.isBefore(fromMoment)) {
             self.pickerFrom.setDate(moment(toMoment).subtract(1, 'day').toDate());
         }
-    };
+    }
 }
 
 
@@ -65,7 +65,7 @@ function DateLogic(state, handles, constants) {
 DateLogic.prototype.initializeDates = function initializeDates() {
     var self = this;
     var state = self.state
-        , log = self.handles.log
+        , log = self.handles.log;
 
     return bRequest.get(self.constants.API.YMDS)
         .then(function(res) {

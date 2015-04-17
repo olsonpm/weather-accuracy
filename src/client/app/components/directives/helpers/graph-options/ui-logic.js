@@ -51,7 +51,7 @@ UILogic.prototype.initiateTitleClick = function initiateTitleClick() {
 
         // if the options are expanded, then we need to retract them
         if (dialog.hasClass('expanded')) {
-            content.css('height', 0)
+            content.css('height', 0);
             dialog.removeClass('expanded');
             dialog.addClass('retracted');
             content.removeAttr('style');

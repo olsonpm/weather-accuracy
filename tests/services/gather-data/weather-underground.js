@@ -71,7 +71,7 @@ suite("gather_wunderground_data", function gather_wunderground_data() {
     });
 
     test("download_then_insert_data", function download_then_insert_data() {
-        return gatherInst.downloadThenInsertData(gatherInst.lazyLocations, envInst)
+        return gatherInst.downloadThenInsertData(gatherInst.lazyLocations.toArray(), envInst)
             .then(function(res) {
                 var rejected = lazy(res).find(function(p) {
                     return p.isRejected();

@@ -10,16 +10,16 @@ var angular = require('angular')
     , config = require('../../../package.json')
     , path = require('path');
 
-var BunyanStreams = nh.BunyanStreams;
-var curEnv = (new nh.Environment()).curEnv();
-
 
 //------//
 // Init //
 //------//
 
+var bunyanStreams = nh.bunyanStreams;
+var curEnv = (new nh.Environment()).curEnv();
+
 var appName = "weatherAccuracy";
-var bstream = BunyanStreams(appName, curEnv);
+var bstream = bunyanStreams(appName, curEnv);
 var log = bunyan.createLogger({
     name: appName
     , src: bstream.source

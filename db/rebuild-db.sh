@@ -31,4 +31,4 @@ msDiff=$((${ms2}-${ms1}))
 ms=$((msDiff-100))
 s=$((msDiff/100))
 
-printf "finished rebuilding weather_accuracy_test in ${s}.%02d seconds\n" ${ms}
+printf "finished rebuilding weather_accuracy in ${s}.%02d seconds\n" ${ms}

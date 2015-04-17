@@ -20,9 +20,9 @@ var routesInst = new Routes();
 // Main //
 //------//
 
-module.exports = function(app, curEnv, currentDir) {
-    var routeSeq = routesInst.env(curEnv).routeSeq();
-    var singlePage = path.join(currentDir, curEnv, 'index.html');
+module.exports = function(app, envInst, currentDir) {
+    var routeSeq = routesInst.env(envInst.curEnv()).routeSeq();
+    var singlePage = path.join(currentDir, envInst.curEnv(), 'index.html');
 
     routeSeq
         .where(l('r', 'r.name !== "otherwise"'))
@@ -32,7 +32,7 @@ module.exports = function(app, curEnv, currentDir) {
             });
         });
 
-    initApi(app, curEnv);
+    initApi(app, envInst);
 
     // special cases
     app.get('/', function(req, res) {

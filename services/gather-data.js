@@ -24,7 +24,7 @@ bPromise.longStackTraces();
 // Main //
 //------//
 
-function gatherAllData(pgWrapInst, envInst) {
+function gatherData(locationsArray, pgWrapInst, envInst) {
     var gatherWundInst = new GatherWundergroundData(pgWrapInst);
     var gatherHamInst = new GatherHamData(pgWrapInst);
     var gatherFioInst = new GatherFioData(pgWrapInst);
@@ -35,11 +35,10 @@ function gatherAllData(pgWrapInst, envInst) {
             , gatherFioInst.bInit()
         ])
         .then(function() {
-            var allLocations = gatherWundInst.lazyLocations;
             return [
-                gatherWundInst.downloadThenInsertData(allLocations, envInst)
-                , gatherHamInst.downloadThenInsertData(allLocations, envInst)
-                , gatherFioInst.downloadThenInsertData(allLocations, envInst)
+                gatherWundInst.downloadThenInsertData(locationsArray, envInst)
+                , gatherHamInst.downloadThenInsertData(locationsArray, envInst)
+                , gatherFioInst.downloadThenInsertData(locationsArray, envInst)
             ];
         })
         .spread(function(resWund, resHam, resFio) {
@@ -58,4 +57,4 @@ function gatherAllData(pgWrapInst, envInst) {
 // Exports //
 //---------//
 
-module.exports = gatherAllData;
+module.exports = gatherData;

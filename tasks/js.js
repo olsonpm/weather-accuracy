@@ -7,7 +7,7 @@
 
 // generated imports
 
-    var templateCache = require('gulp-angular-templatecache'); 
+var templateCache = require('gulp-angular-templatecache');
 // end of generated imports
 
 var bPromise = require('bluebird')
@@ -18,7 +18,6 @@ var bPromise = require('bluebird')
     , ptr = require('promise-task-runner')
     , streamToPromise = require('stream-to-promise')
     , through2 = require('through2')
-    , uglifyStream = require('uglify-stream')
     , vFs = require('vinyl-fs')
     , vss = require('vinyl-source-stream')
     , VTransform = require('vinyl-transform')
@@ -50,60 +49,59 @@ var lrOptions = {
 var jsClean = new PromiseTask()
     .id('jsClean')
     .task(function() {
-        var env = new Environment({
-            hardCoded: this.globalArgs().env
-        });
+        var envInst = new Environment()
+            .HardCoded(this.globalArgs().env);
 
-        return bRimraf(getJsOutFull(env));
+        return bRimraf(getJsOutFull(envInst));
     });
 
 var jsBuild = new PromiseTask()
     .id('jsBuild')
     .dependencies(jsClean)
     .task(function() {
-        var env = new Environment({
-            hardCoded: this.globalArgs().env
-        });
+        var envInst = new Environment()
+            .HardCoded(this.globalArgs().env);
 
         // ./ added explicitly to avoid browserify bug
         var fileIn = './' + path.join(srcApp, 'index.js');
 
-        
-            return streamToPromise( // first concatenate all the templates into the js cache file
-                    vFs.src(path.join(srcApp, '**/*.html'))
-                    .pipe(templateCache('templates.js', {
-                        moduleSystem: 'Browserify'
-                        , module: 'weatherAccuracy'
-                        , root: path.join(env.curEnv(), 'app')
-                    }))
-                    .pipe(vFs.dest(srcApp))
-                )
-                .then(function() { // then run everything through browserify
-                    var bundledStream = browserify(fileIn)
-                        .bundle();
+        return streamToPromise( // first concatenate all the templates into the js cache file
+                vFs.src(path.join(srcApp, '**/*.html'))
+                .pipe(templateCache({
+                    moduleSystem: 'Browserify'
+                    , module: 'weatherAccuracy'
+                    , root: path.join(envInst.curEnv(), 'app')
+                }))
+                .pipe(vFs.dest(srcApp))
+            )
+            .then(function() { // then run everything through browserify
+                var bundler = browserify(fileIn);
 
-                    if (env.isProd()) { // and if prod, uglify
-                        bundledStream = bundledStream.pipe(uglifyStream());
-                    }
+                if (envInst.isProd()) { // and if prod, uglify
+                    bundler.transform({
+                        global: true
+                    }, 'uglifyify');
+                }
 
-                    return streamToPromise(
-                        bundledStream.pipe(vss(getJsOut(env)))
-                        .pipe(replaceENV(env))
-                        .pipe(vFs.dest(env.curEnv()))
-                    );
-                }); 
+                return streamToPromise(
+                    bundler.bundle()
+                    .pipe(vss(getJsOut(envInst)))
+                    .pipe(replaceENV(envInst))
+                    .pipe(vFs.dest(envInst.curEnv()))
+                );
+            });
     });
 
 var jsWatch = new PromiseTask()
     .id('jsWatch')
     .task(function() {
         var self = this;
-        var env = new Environment({
-            hardCoded: self.globalArgs().env
-        });
+        var envInst = new Environment()
+            .HardCoded(this.globalArgs().env);
+
         var watcher = vFs.watch(path.join(srcApp, "**/*"));
 
-        var destJs = path.join(env.curEnv(), getJsOut(env));
+        var destJs = path.join(envInst.curEnv(), getJsOut(envInst));
         watcher.on('change', function(fpath) {
             jsBuild
                 .globalArgs(self.globalArgs())
@@ -129,8 +127,8 @@ function replaceENV(env) {
     });
 }
 
-function getJsOut(env) {
-    return (env.isProd())
+function getJsOut(envInst) {
+    return (envInst.isProd())
         ? 'index.min.js'
         : 'index.js';
 }

@@ -14,7 +14,6 @@ var DataPoint = require('../../db/models/extensions/data-point')
     , DALSource = require('../../db/models/dal/source')
     , DALType = require('../../db/models/dal/type')
     , DALymd = require('../../db/models/dal/ymd')
-    , DALLocation = require('../../db/models/dal/location')
     , DALMeasurementName = require('../../db/models/dal/measurement-name')
     , bFs = require('fs-bluebird')
     , nh = require('node-helpers')
@@ -55,14 +54,12 @@ GatherWundergroundData.prototype.bInit = function bInit() {
             , (new DALMeasurementName(self.pgWrapperInst)).getAllMeasurementNames()
             , (new DALType(self.pgWrapperInst)).getAllTypes()
             , (new DALymd(self.pgWrapperInst)).getYmdsFromDate(moment().subtract(1, 'day').format('YYYYMMDD'))
-            , (new DALLocation(self.pgWrapperInst)).getAllLocations()
         ])
-        .spread(function(resSources, resMeasurementNames, resTypes, resYmds, resLocations) {
+        .spread(function(resSources, resMeasurementNames, resTypes, resYmds) {
             self.lazySources = resSources;
             self.lazyMeasurementNames = resMeasurementNames;
             self.lazyTypes = resTypes;
             self.lazyYmds = resYmds;
-            self.lazyLocations = resLocations;
 
             var date1 = moment().subtract(1, 'day').format('YYYYMMDD')
                 , date2 = moment().add(5, 'days').format('YYYYMMDD');
@@ -94,12 +91,12 @@ GatherWundergroundData.prototype.bInit = function bInit() {
         });
 };
 
-GatherWundergroundData.prototype.downloadThenInsertData = function downloadThenInsertData(someLocations, envInst) {
+GatherWundergroundData.prototype.downloadThenInsertData = function downloadThenInsertData(locationsArray, envInst) {
     var self = this;
 
     var bInserts = [];
 
-    someLocations.each(function(aLocation) {
+    locationsArray.forEach(function(aLocation) {
         var forecastUrl = 'http://api.wunderground.com/api/' + process.env.WEATHER_UNDERGROUND_API_KEY + '/forecast10day/q/' + aLocation.Latitude() + ',' + aLocation.Longitude() + '.json';
         var actualUrl = 'http://api.wunderground.com/api/' + process.env.WEATHER_UNDERGROUND_API_KEY + '/history_' + moment().add(-1, 'days').format('YYYYMMDD') + '/q/' + aLocation.Latitude() + ',' + aLocation.Longitude() + '.json';
         var bForecastData

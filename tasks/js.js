@@ -75,12 +75,16 @@ var jsBuild = new PromiseTask()
                 .pipe(vFs.dest(srcApp))
             )
             .then(function() { // then run everything through browserify
-                var bundler = browserify(fileIn);
+                var bundler = browserify({
+                    debug: true
+                });
+                bundler.add(fileIn);
 
                 if (envInst.isProd()) { // and if prod, uglify
-                    bundler.transform({
-                        global: true
-                    }, 'uglifyify');
+                    bundler.plugin('minifyify', {
+                        output: path.join(envInst.curEnv(), 'index.map.js')
+                        , map: 'index.map.js'
+                    });
                 }
 
                 return streamToPromise(

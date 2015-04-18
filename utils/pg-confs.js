@@ -19,7 +19,7 @@ if (e.DATABASE_URL) {
         , ssl: true
     });
 
-    module.exports.test = new PGConf({
+    module.exports.prod = module.exports.test = new PGConf({
         user: 'weather_accuracy'
         , database: 'weather_accuracy'
         , password: e.PGPASS_WEATHER_ACCURACY

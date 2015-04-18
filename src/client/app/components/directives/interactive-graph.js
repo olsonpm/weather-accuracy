@@ -37,7 +37,7 @@ module.exports = function(app, log) {
 
         return {
             restrict: 'E'
-            , controller: controllerFn
+            , controller: ['$scope', '$element', '$attrs', controllerFn]
             , templateUrl: envInst.curEnv() + '/app/components/directives/interactive-graph.html'
         };
     });

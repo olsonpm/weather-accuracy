@@ -60,6 +60,7 @@
     "jstimezonedetect": "git://github.com/olsonpm/jstimezonedetect",
     "lambda-js": "^0.1.5",
     "lodash": "^3.5.0",
+    "minifyify": "^6.4.0",
     "mkdirp": "^0.5.0",
     "mocha": "^2.2.0",
     "mocha-clean": "^0.4.0",
@@ -79,7 +80,6 @@
     "stream-to-promise": "^1.0.4",
     "through2": "^0.6.3",
     "tiny-lr": "^0.1.5",
-    "uglifyify": "^3.0.1",
     "vinyl-fs": "^0.3.13",
     "vinyl-source-stream": "^1.0.0",
     "vinyl-transform": "^1.0.0"

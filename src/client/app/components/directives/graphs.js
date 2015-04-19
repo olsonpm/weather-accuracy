@@ -175,7 +175,8 @@ module.exports = function(app, log) {
                     row = element.find('.sources > .legend > .content')
                         .append('<div class="row"></div>')
                         .children('.row').eq(2)
-                        .append('<span class="label line-forecasted">Distance between forecasted and actual</span>');
+                        // nbsp prevents an orphan
+                        .append('<span class="label line-forecasted">Distance between forecasted and&nbsp;actual</span>');
 
                     tmpSvg = d3.select(row[0])
                         .append('svg')
@@ -448,6 +449,8 @@ module.exports = function(app, log) {
                     }
                 });
             };
+
+            element.cleanWhitespace();
         };
 
         return {

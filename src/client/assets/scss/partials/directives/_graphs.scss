@@ -64,6 +64,12 @@ graphs {
 		svg {
 			vertical-align: top;
 		}
+		.label {
+			max-width: 60%;
+		}
+		svg {
+			max-width: 40%;
+		}
 	}
 
 	.sources > ul > li

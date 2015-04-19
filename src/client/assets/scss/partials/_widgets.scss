@@ -14,6 +14,10 @@ $tmp: 26;
 $dialog-content-min-height: #{$tmp}vmin;
 $m_dialog-content-min-height: round($max-size * 0.01 * $tmp) * 1px;
 
+$tmp: 6;
+$label-pad-right: #{$tmp}vmin;
+$m_label-pad-right: round($max-size * 0.01 * $tmp) * 1px;
+
 
 //-----//
 // CSS //
@@ -36,7 +40,7 @@ $m_dialog-content-min-height: round($max-size * 0.01 * $tmp) * 1px;
 		label
 		 , .label {
 		 
-			margin-right: 20px;
+			padding-right: $label-pad-right;
 			text-align: right;
 			
 			&:after {
@@ -63,6 +67,12 @@ $m_dialog-content-min-height: round($max-size * 0.01 * $tmp) * 1px;
 		
 			> .row {
 				margin: $m_h2-vert-margin;
+			}
+			
+			label
+			 , .label {
+			 
+				padding-right: $m_label-pad-right;
 			}
 			
 			input.pikaday {

@@ -41,6 +41,7 @@ var PromiseTask = ptr.PromiseTask
     , LogProvider = nh.LogProvider;
 
 var srcHtml = 'src/client/index.html';
+var srcFavicon = 'favicon.png';
 var ENVIRONMENT_VARIABLE_DEPENDENCIES = [
     'WEATHER_UNDERGROUND_API_KEY'
     , 'FORECAST_IO_API_KEY'
@@ -102,11 +103,16 @@ var build = new PromiseTask()
         var envInst = new Environment()
             .HardCoded(this.globalArgs().env);
 
-        return streamToPromise(
-            vFs.src(srcHtml)
-            .pipe(injector(envInst))
-            .pipe(vFs.dest(envInst.curEnv()))
-        );
+        return bPromise.resolve([
+            streamToPromise(
+                vFs.src(srcHtml)
+                .pipe(injector(envInst))
+                .pipe(vFs.dest(envInst.curEnv())))
+            , streamToPromise(
+                vFs.src(srcFavicon)
+                .pipe(vFs.dest(envInst.curEnv())))
+
+        ]);
     });
 
 var htmlWatch = new PromiseTask()

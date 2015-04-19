@@ -16,7 +16,7 @@ $m_fancybox-pad-bot: round($max-size * 0.01 * $tmp) * 1px;
 //-----//
 
 .fancybox-wrap {
-    max-width: 60%;
+    max-width: 80%;
 }
 .fancybox-inner {
 	height: auto !important;
@@ -30,6 +30,10 @@ $m_fancybox-pad-bot: round($max-size * 0.01 * $tmp) * 1px;
 //-----------------------//
 
 @media (min-width: #{$max-size}px) and (min-height: #{$max-size}px) {
+	.fancybox-wrap {
+		max-width: 60%;
+	}
+
 	.fancybox-inner {
 		padding: 0 $m_fancybox-pad-hor $m_fancybox-pad-bot;
 	}

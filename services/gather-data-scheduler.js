@@ -114,6 +114,7 @@ GatherDataScheduler.prototype._scheduleDataInsertions = function _scheduleDataIn
             Schedule.scheduleJob({
                 dayOfWeek: [new Schedule.Range(0, 6)]
                 , hour: localHourForLocation
+                , minute: 0
             }, function() {
                 log.info("Gathering data for " + jobLocationsStr);
                 gatherDataService(locationArray, self.pgWrapInst, self.envInst);

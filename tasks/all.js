@@ -37,8 +37,11 @@ var PromiseTask = ptr.PromiseTask
     , TaskDependency = ptr.TaskDependency
     , PromiseTaskContainer = ptr.PromiseTaskContainer
     , Environment = nh.Environment
-    , lazy = nh.lazyExtensions
-    , LogProvider = nh.LogProvider;
+    , lazy = nh.lazyExtensions;
+
+var log = new(nh.LogProvider)()
+    .EnvInst(new Environment().HardCoded('dev'))
+    .getLogger();
 
 var srcHtml = 'src/client/index.html';
 var srcFavicon = 'favicon.png';
@@ -122,9 +125,6 @@ var htmlWatch = new PromiseTask()
 
         var envInst = new Environment()
             .HardCoded(self.globalArgs().env);
-        var log = new LogProvider()
-            .EnvInst(envInst)
-            .getLogger();
 
         var watcher = vFs.watch(srcHtml);
         watcher.on('change', function(fpath) {
@@ -160,9 +160,6 @@ var startServer = new PromiseTask()
     .task(function() {
         var envInst = new Environment()
             .HardCoded(this.globalArgs().env);
-        var log = new LogProvider()
-            .EnvInst(envInst)
-            .getLogger();
 
         checkEnvVars();
 
@@ -204,7 +201,7 @@ var startLr = new PromiseTask()
     .task(function() {
         var port = 35729;
         tinyLr().listen(port, function() {
-            console.log('Listening on port: %s ', port);
+            log.info('Listening on port: %s ', port);
         });
     });
 

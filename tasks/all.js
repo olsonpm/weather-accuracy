@@ -25,7 +25,6 @@ var ptr = require('promise-task-runner')
     , bMkdirp = bPromise.promisify(require('mkdirp'))
     , GatherDataScheduler = require('../services/gather-data-scheduler')
     , insertDates = require('../services/insert-dates')
-    , bunyan = require('bunyan')
     , confs = require('../utils/pg-confs');
 
 

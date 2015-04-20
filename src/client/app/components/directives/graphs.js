@@ -9,16 +9,14 @@ var d3 = require('d3')
     , nh = require('node-helpers')
     , moment = require('moment')
     , roundn = require('compute-roundn')
-    , $ = require('jquery')
-    , TweenLite = require('TweenLite');
+    , $ = require('jquery');
 
 
 //------//
 // Init //
 //------//
 
-var envInst = new nh.Environment()
-    , gsapd = nh.gsapDefaults(window);
+var envInst = new nh.Environment();
 
 require('fancybox')($);
 require('imagesloaded'); // will attach itself to the window.jQuery object.
@@ -100,8 +98,9 @@ module.exports = function(app, log) {
                 .y(actualY);
 
             scope.updateGraphData = function updateGraphData(newData, sources, currentMeasurementName, currentType, moments) {
-                log.debug("graph's updateGraphData called");
                 element.addClass('loaded');
+
+                log.debug("graph's updateGraphData called");
 
                 scope.$applyAsync(function() {
                     scope.measurement = currentMeasurementName.NiceValue();
@@ -432,25 +431,10 @@ module.exports = function(app, log) {
                     .attr('y',-roundn(leftMargin / 2, 0))
                     .text('Total Difference in ' + currentMeasurementName.Symbol());
 
-                // stop loading status, start finished status.  Not dealing with errors since this is just a side project
-                var status = $('graph-options .status.loading')
-                    .removeClass('loading')
-                    .addClass('finished')
-                    .attr('src', '../img/check_mark.png');
-
                 interactiveGraphCtrl.setOptionsSubmitEnabled(true);
 
-                TweenLite.to(status, 5, {
-                    opacity: '0'
-                    , delay: 1.2
-                    , ease: gsapd.EASE
-                    , onComplete: function() {
-                        status.remove();
-                    }
-                });
+                element.cleanWhitespace();
             };
-
-            element.cleanWhitespace();
         };
 
         return {

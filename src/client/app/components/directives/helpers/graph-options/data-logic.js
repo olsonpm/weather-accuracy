@@ -9,6 +9,7 @@ var nh = require('node-helpers')
     , $ = require('jquery')
     , bPromise = require('bluebird')
     , moment = require('moment')
+    , TweenLite = require('TweenLite')
     , DataPoint = require('../../../../../../../db/models/extensions/data-point')
     , Location = require('../../../../../../../db/models/extensions/location')
     , Type = require('../../../../../../../db/models/extensions/type')
@@ -20,7 +21,8 @@ var nh = require('node-helpers')
 // Init //
 //------//
 
-var lazy = nh.lazyExtensions;
+var lazy = nh.lazyExtensions
+    , gsapd = nh.gsapDefaults(window);
 var bRequest = new nh.BRequest()
     .BaseUrl(window.location.origin)
     .IsJSON(true);
@@ -113,18 +115,26 @@ DataLogic.prototype.updateGraphData = function updateGraphData() {
         state.lastSubmittedMeasurementNameID = currentMeasurementNameID;
     }
 
-
     var bLazyDataPoints;
 
     if (fetchNewGraphData) {
         log.debug('fetching new graph data');
+
         bLazyDataPoints = bRequest.get(API.GRAPH_DATA + '?dateFrom=' + fromDate + '&dateTo=' + toDate)
             .then(function(res) {
-                state.lazyDataPoints = lazy(res.map(function(jsonDataPoint) {
-                    return new DataPoint(jsonDataPoint);
-                }));
-
-                return state.lazyDataPoints;
+                var resArray = [];
+                return lazy(res)
+                    .async()
+                    .setNumElementsPerAsync(40)
+                    .each(function(jsonDataPoint) {
+                        if (jsonDataPoint) {
+                            resArray.push(new DataPoint(jsonDataPoint));
+                        }
+                    })
+                    .then(function() {
+                        state.lazyDataPoints = lazy(resArray).memoize();
+                        return state.lazyDataPoints;
+                    });
             });
     } else {
         bLazyDataPoints = bPromise.resolve(state.lazyDataPoints);
@@ -157,72 +167,77 @@ DataLogic.prototype.updateGraphData = function updateGraphData() {
                 log.debug('nothing has changed');
             }
 
-            res = res.filter(function byDate(aDataPoint) {
-                var dpMoment = aDataPoint.Data().YMD().getMoment();
-                return (dpMoment.isSame(fromMoment) || dpMoment.isAfter(fromMoment))
-                    && (dpMoment.isSame(toMoment) || dpMoment.isBefore(toMoment));
-            });
-            res = res.filter(function byLocation(aDataPoint) {
-                return aDataPoint.Data().Location().LocationID() === currentLocationID;
-            });
-            res = res.filter(function byType(aDataPoint) {
-                // include both the type selected as well as the actual to compare against
-                return aDataPoint.Data().Type().TypeID() === currentTypeID
-                    || aDataPoint.Data().Type().Name() === Type.NAMES.ACTUAL;
-            });
-            res = res.filter(function byMeasurementName(aDataPoint) {
-                return currentMeasurementNameID === aDataPoint.MeasurementName().MeasurementNameID();
-            });
+            var filteredRes = [];
 
-            var forecasted = res.filter(function specificLocation(aDataPoint) {
-                    return currentTypeID === aDataPoint.Data().Type().TypeID();
-                })
-                .sort(function(left, right) {
-                    return left.Data().YMD().Value() - right.Data().YMD().Value();
-                })
-                .toArray();
-            var actual = res.filter(function specificLocation(aDataPoint) {
-                    return aDataPoint.Data().Type().Name() === Type.NAMES.ACTUAL;
-                })
-                .sort(function(left, right) {
-                    return left.Data().YMD().Value() - right.Data().YMD().Value();
-                })
-                .toArray();
-
-            // locationForecasted and locationActual should have matching index per ymd values
-            forecasted.forEach(function(aDataPoint, i) {
-                graphData[aDataPoint.Data().Source().SourceID()].push({
-                    ymd: aDataPoint.Data().YMD().Value()
-                    , forecasted: aDataPoint.Value()
-                    , actual: actual[i].Value()
-                    , source: aDataPoint.Data().Source().SourceID()
-                    , location: aDataPoint.Data().Location().Name()
+            var filterAsyncHandle = res.async()
+                .setNumElementsPerAsync(40)
+                .each(function byDateLocationTypeAndMeasurementName(aDataPoint) {
+                    var dpMoment = aDataPoint.Data().YMD().getMoment();
+                    if ((dpMoment.isSame(fromMoment) || dpMoment.isAfter(fromMoment))
+                        && (dpMoment.isSame(toMoment) || dpMoment.isBefore(toMoment))
+                        && aDataPoint.Data().Location().LocationID() === currentLocationID
+                        && (
+                            aDataPoint.Data().Type().TypeID() === currentTypeID
+                            || aDataPoint.Data().Type().Name() === Type.NAMES.ACTUAL
+                        ) && aDataPoint.MeasurementName().MeasurementNameID() === currentMeasurementNameID) {
+                        filteredRes.push(aDataPoint);
+                    }
                 });
-                var totalForecastedDifference = +graphData.tmpAggregate[aDataPoint.Data().Source().SourceID()];
-                graphData.tmpAggregate[aDataPoint.Data().Source().SourceID()] = totalForecastedDifference + Math.abs(actual[i].Value() - aDataPoint.Value());
-            });
 
-            // i is the 1-indexed location within the array for use with the x-axis
-            state.lazySources.each(function(aSource, i) {
-                graphData.aggregate.push({
-                    i: i + 1
-                    , sourceID: aSource.SourceID()
-                    , degrees: graphData.tmpAggregate[aSource.SourceID()]
-                });
-            });
-            graphData.tmpAggregate = undefined;
+            filterAsyncHandle.onComplete(function() {
+                filteredRes = lazy(filteredRes).memoize();
+                return bPromise.resolve([
+                        getActualDataPoints(filteredRes)
+                        , filteredRes
+                        , state
+                        , graphData
+                    ])
+                    .spread(function(forecastedArray, filteredRes, state, graphData) {
+                        return bPromise.resolve([
+                            forecastedArray, forecastedArray, state, graphData
+                        ]);
+                    })
+                    .spread(function(forecastedArray, actualArray, state, graphData) {
+                        graphData = setGraphData(forecastedArray, actualArray, state, graphData);
 
-            var currentMeasurementName = state.lazyMeasurementNames.find(function(aMeasurementName) {
-                return aMeasurementName.MeasurementNameID() === currentMeasurementNameID;
+                        var currentMeasurementName = state.lazyMeasurementNames.find(function(aMeasurementName) {
+                            return aMeasurementName.MeasurementNameID() === currentMeasurementNameID;
+                        });
+                        var currentType = state.lazyTypes.find(function(aType) {
+                            return aType.TypeID() === currentTypeID;
+                        });
+                        var moments = {
+                            from: fromMoment
+                            , to: toMoment
+                        };
+
+                        // stop loading status, start finished status.  Not dealing with errors since this is just a side project
+                        var status = $('graph-options .status.loading')
+                            .removeClass('loading')
+                            .addClass('finished')
+                            .attr('src', '../img/check_mark.png');
+
+                        TweenLite.to(status, 5, {
+                            opacity: '0'
+                            , delay: 1.2
+                            , ease: gsapd.EASE
+                            , onComplete: function() {
+                                status.remove();
+                            }
+                        });
+
+                        return bPromise.resolve([
+                            graphData
+                            , state
+                            , currentMeasurementName
+                            , currentType
+                            , moments
+                        ]);
+                    })
+                    .spread(function(graphData, state, currentMeasurementName, currentType, moments) {
+                        interactiveGraphCtrl.updateGraphData(graphData, state.lazySources.toArray(), currentMeasurementName, currentType, moments);
+                    });
             });
-            var currentType = state.lazyTypes.find(function(aType) {
-                return aType.TypeID() === currentTypeID;
-            });
-            var moments = {
-                from: fromMoment
-                , to: toMoment
-            };
-            interactiveGraphCtrl.updateGraphData(graphData, state.lazySources.toArray(), currentMeasurementName, currentType, moments);
         })
         .finally(function() {
             log.debug('graph-data request completed');
@@ -333,6 +348,98 @@ DataLogic.prototype.initializeSources = function initializeSources() {
             log.debug('sources request completed');
         });
 };
+
+
+//---------//
+// Helpers //
+//---------//
+
+function getForecastedDataPoints(lazyDataPoints, currentTypeID) {
+    var filterRes = [];
+    var sortedRes = [];
+    return lazyDataPoints
+        .filter(function specificLocation(aDataPoint) {
+            return currentTypeID === aDataPoint.Data().Type().TypeID();
+        })
+        .async()
+        .each(function(aFilteredDataPoint) {
+            if (aFilteredDataPoint) {
+                filterRes.push(aFilteredDataPoint);
+            }
+        })
+        .then(function() {
+            return lazy(filterRes).memoize()
+                .sort(function(left, right) {
+                    return left.Data().YMD().Value() - right.Data().YMD().Value();
+                })
+                .async()
+                .each(function(aSortedDataPoint) {
+                    if (aSortedDataPoint) {
+                        sortedRes.push(aSortedDataPoint);
+                    }
+                })
+                .then(function() {
+                    return sortedRes;
+                });
+        });
+}
+
+function getActualDataPoints(lazyDataPoints) {
+    var filterRes = [];
+    var sortedRes = [];
+    return lazyDataPoints
+        .filter(function specificLocation(aDataPoint) {
+            return aDataPoint.Data().Type().Name() === Type.NAMES.ACTUAL;
+        })
+        .async()
+        .each(function(aDataPoint) {
+            if (aDataPoint) {
+                filterRes.push(aDataPoint);
+            }
+        })
+        .then(function() {
+            return lazy(filterRes).memoize()
+                .sort(function(left, right) {
+                    return left.Data().YMD().Value() - right.Data().YMD().Value();
+                })
+                .async()
+                .each(function(aDataPoint) {
+                    if (aDataPoint) {
+                        sortedRes.push(aDataPoint);
+                    }
+                })
+                .then(function() {
+                    return sortedRes;
+                });
+        });
+}
+
+function setGraphData(forecastedArray, actualArray, state, graphData) {
+    // locationForecasted and locationActual should have matching index per ymd values
+    forecastedArray.forEach(function(aDataPoint, i) {
+        graphData[aDataPoint.Data().Source().SourceID()].push({
+            ymd: aDataPoint.Data().YMD().Value()
+            , forecasted: aDataPoint.Value()
+            , actual: actualArray[i].Value()
+            , source: aDataPoint.Data().Source().SourceID()
+            , location: aDataPoint.Data().Location().Name()
+        });
+        var totalForecastedDifference = +graphData.tmpAggregate[aDataPoint.Data().Source().SourceID()];
+        graphData.tmpAggregate[aDataPoint.Data().Source().SourceID()] = totalForecastedDifference + Math.abs(actualArray[i].Value() - aDataPoint.Value());
+    });
+
+    // i is the 1-indexed location within the array for use with the x-axis
+    state.lazySources.each(function(aSource, i) {
+        graphData.aggregate.push({
+            i: i + 1
+            , sourceID: aSource.SourceID()
+            , degrees: graphData.tmpAggregate[aSource.SourceID()]
+        });
+    });
+    graphData.tmpAggregate = undefined;
+
+    return graphData;
+}
 
 
 //---------//

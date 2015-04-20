@@ -18,10 +18,11 @@ function initSite($scope, log) {
     // clean html whitespace jquery plugin as found here:
     //   http://stackoverflow.com/questions/1539367/remove-whitespace-and-line-breaks-between-html-elements-using-jquery
     $.fn.cleanWhitespace = function() {
-        textNodes = this.contents().filter(
+        this.contents().filter(
                 function() {
                     return (this.nodeType == 3 && !/\S/.test(this.nodeValue));
-                })
+                }
+            )
             .remove();
         return this;
     }

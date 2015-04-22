@@ -5,35 +5,23 @@
 //---------//
 
 var angular = require('angular')
-    , nh = require('node-helpers')
-    , bunyan = require('bunyan')
-    , config = require('../../../package.json')
-    , path = require('path');
+    , nh = require('node-helpers');
 
 
 //------//
 // Init //
 //------//
 
-var bunyanStreams = nh.bunyanStreams;
-var curEnv = (new nh.Environment()).curEnv();
-
-var appName = "weatherAccuracy";
-var bstream = bunyanStreams(appName, curEnv);
-var log = bunyan.createLogger({
-    name: appName
-    , src: bstream.source
-    , streams: [{
-        level: bstream.level
-        , stream: bstream.stream
-        , type: bstream.type
-    }]
-});
+var appName = 'weatherAccuracy';
+var envInst = new nh.Environment();
+var log = new nh.LogProvider()
+    .AppName(appName)
+    .getLogger();
 
 // initialize personal jquery plugins
 require('personal-jquery-plugins').initAll((require('jquery')));
 
-var app = angular.module('weatherAccuracy', [require('angular-route')]);
+var app = angular.module(appName, [require('angular-route')]);
 // load the template cache
 require('./templates');
 
@@ -41,7 +29,7 @@ require('./templates');
 // Add Routes //
 //------------//
 
-require('./routes')(app, curEnv);
+require('./routes')(app, envInst.curEnv());
 
 
 //-----------------//

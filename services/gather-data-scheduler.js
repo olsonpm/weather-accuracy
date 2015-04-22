@@ -72,6 +72,7 @@ GatherDataScheduler.prototype._scheduleDayInsertions = function _scheduleDayInse
     Schedule.scheduleJob({
         dayOfWeek: [new Schedule.Range(0, 6)]
         , hour: localHourForMidnightUtc
+        , minute: 0
     }, function() {
         log.info("Inserting ymd's into the database");
         insertDates(self.pgWrapInst);

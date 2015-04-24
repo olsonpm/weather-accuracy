@@ -30,7 +30,7 @@ function insertDates(curPGWrapper) {
     }
 
     var dalYmdInst = new DALymd(curPGWrapper);
-    var initialMoment = moment(0, 'H').subtract(1, 'day');
+    var initialMoment = moment().startOf('day').subtract(1, 'day');
     return dalYmdInst.getYmdsFromDate(initialMoment.format('YYYYMMDD'))
         .then(function(lazyDates) {
             var bDates = [];
@@ -38,11 +38,8 @@ function insertDates(curPGWrapper) {
                 return aYmd.Value();
             });
 
-            for (var i = 0; i < 8; i++) {
-                if (i === 1) {
-                    initialMoment.add(1, 'day');
-                    continue;
-                }
+            // inserts yesterday, the current day, then the following 6 days
+            for (var i = 0; i < 9; i++) {
                 var tmpDate = initialMoment.format('YYYYMMDD');
                 if (!lazyDates.contains(tmpDate)) {
                     bDates.push(

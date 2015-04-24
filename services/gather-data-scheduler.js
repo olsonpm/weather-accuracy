@@ -36,6 +36,8 @@ function GatherDataScheduler(pgWrapInst, envInst) {
     this.log = new LogProvider()
         .EnvInst(envInst)
         .getLogger();
+
+    this.localTz = jstz.determine().name();
 }
 
 
@@ -65,7 +67,7 @@ GatherDataScheduler.prototype._scheduleDayInsertions = function _scheduleDayInse
     var log = self.log;
 
     var curMoment = moment();
-    var localHourForMidnightUtc = moment.tz(Date.UTC(curMoment.year(), curMoment.month(), curMoment.day(), 0), 'America/New_York').hour();
+    var localHourForMidnightUtc = moment(Date.UTC(curMoment.year(), curMoment.month(), curMoment.day(), 0)).hour();
 
     log.info('Local hour equal to midnight UTC: ' + localHourForMidnightUtc);
 
@@ -93,8 +95,7 @@ GatherDataScheduler.prototype._scheduleDataInsertions = function _scheduleDataIn
 
     // for now we are going to assume the eastern timezone.  Heroku's servers reported live there
     //   and their local time zone is unfortunately UTC
-    var localTZ = 'America/New_York';
-    log.info('local Time Zone (hardcoded): ' + localTZ);
+    log.info('local System Time Zone: ' + self.localTz);
 
     lazyLocations
         .groupBy(function(aLocation) {
@@ -102,7 +103,7 @@ GatherDataScheduler.prototype._scheduleDataInsertions = function _scheduleDataIn
         })
         .each(function(locationArray) {
             var locationTZ = locationArray[0].TZ();
-            var localHourForLocation = moment.tz(curDateAtNoonObj, locationTZ).tz(localTZ).hour();
+            var localHourForLocation = moment(curDateAtNoonObj).tz(locationTZ).hour();
 
             log.info('Local hour equal to noon in ' + locationTZ + ': ' + localHourForLocation);
 

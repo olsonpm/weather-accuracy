@@ -14,6 +14,7 @@ var GatherWundergroundData = require('../../../services/gather-data/weather-unde
     , Unit = require('../../../db/models/extensions/unit')
     , DALData = require('../../../db/models/dal/data')
     , DALDataPoint = require('../../../db/models/dal/data-point')
+    , DALLocation = require('../../../db/models/dal/location')
     , testForecast = require('./example/wunderground-forecast')
     , testActual = require('./example/wunderground-actual')
     , chai = require('chai')
@@ -47,6 +48,7 @@ suite("gather_wunderground_data", function gather_wunderground_data() {
     var pgWrapInst = confs[envInst.curEnv()].GeneratePGWrapper();
     var dalDataPointInst = new DALDataPoint(pgWrapInst);
     var dalDataInst = new DALData(pgWrapInst);
+    var dalLocationInst = new DALLocation(pgWrapInst);
     var tomorrowMoment = moment(0, 'H').add(1, 'day');
     var tomorrowForecast = lazy(testForecast.forecast.simpleforecast.forecastday)
         .mustFind(function(aForecastDay) {
@@ -58,20 +60,25 @@ suite("gather_wunderground_data", function gather_wunderground_data() {
 
     var bTestVars
         , gatherInst
-        , richmond;
+        , richmond
+        , allLocations;
 
     setup(function() {
-        return new GatherWundergroundData(pgWrapInst).bInit()
-            .then(function(res) {
+        return bPromise.resolve([
+                new GatherWundergroundData(pgWrapInst).bInit()
+                , dalLocationInst.getAllLocations()
+            ])
+            .spread(function(res, lazyLocations) {
+                allLocations = lazyLocations;
                 gatherInst = res;
-                richmond = gatherInst.lazyLocations.find(function(aLocation) {
+                richmond = allLocations.find(function(aLocation) {
                     return aLocation.Name() === Location.NAMES.RICHMOND;
                 });
             });
     });
 
     test("download_then_insert_data", function download_then_insert_data() {
-        return gatherInst.downloadThenInsertData(gatherInst.lazyLocations.toArray(), envInst)
+        return gatherInst.downloadThenInsertData(allLocations.toArray(), envInst)
             .then(function(res) {
                 var rejected = lazy(res).find(function(p) {
                     return p.isRejected();

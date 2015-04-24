@@ -103,7 +103,11 @@ GatherDataScheduler.prototype._scheduleDataInsertions = function _scheduleDataIn
         })
         .each(function(locationArray) {
             var locationTZ = locationArray[0].TZ();
-            var localHourForLocation = moment(curDateAtNoonObj).tz(locationTZ).hour();
+
+            var left = moment(curDateAtNoonObj);
+            var right = moment.tz(curDateAtNoonObj, locationTZ);
+            var diffHours = left.diff(right, 'hours');
+            var localHourForLocation = moment(curDateAtNoonObj).subtract(diffHours, 'hours').hour();
 
             log.info('Local hour equal to noon in ' + locationTZ + ': ' + localHourForLocation);
 

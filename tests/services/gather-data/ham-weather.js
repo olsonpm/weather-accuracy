@@ -14,6 +14,7 @@ var GatherHamData = require('../../../services/gather-data/ham-weather')
     , Unit = require('../../../db/models/extensions/unit')
     , DALData = require('../../../db/models/dal/data')
     , DALDataPoint = require('../../../db/models/dal/data-point')
+    , DALLocation = require('../../../db/models/dal/location')
     , testForecast = require('./example/ham-forecast')
     , testActual = require('./example/ham-actual')
     , chai = require('chai')
@@ -47,6 +48,7 @@ suite("gather_ham_data", function gather_ham_data() {
     var pgWrapInst = confs[envInst.curEnv()].GeneratePGWrapper();
     var dalDataPointInst = new DALDataPoint(pgWrapInst);
     var dalDataInst = new DALData(pgWrapInst);
+    var dalLocationInst = new DALLocation(pgWrapInst);
     var tomorrowMoment = moment(0, 'H').add(1, 'day');
     var tomorrowForecast = lazy(testForecast.response[0].periods)
         .mustFind(function(aForecastDay) {
@@ -58,20 +60,25 @@ suite("gather_ham_data", function gather_ham_data() {
 
     var bTestVars
         , gatherInst
-        , richmond;
+        , richmond
+        , allLocations;
 
     setup(function() {
-        return new GatherHamData(pgWrapInst).bInit()
-            .then(function(res) {
+        return bPromise.resolve([
+                new GatherHamData(pgWrapInst).bInit()
+                , dalLocationInst.getAllLocations()
+            ])
+            .spread(function(res, lazyLocations) {
+                allLocations = lazyLocations;
                 gatherInst = res;
-                richmond = gatherInst.lazyLocations.find(function(aLocation) {
+                richmond = allLocations.find(function(aLocation) {
                     return aLocation.Name() === Location.NAMES.RICHMOND;
                 });
             });
     });
 
     test("download_then_insert_data", function download_then_insert_data() {
-        return gatherInst.downloadThenInsertData(gatherInst.lazyLocations.toArray(), envInst)
+        return gatherInst.downloadThenInsertData(allLocations.toArray(), envInst)
             .then(function(res) {
                 var rejected = lazy(res).find(function(p) {
                     return p.isRejected();

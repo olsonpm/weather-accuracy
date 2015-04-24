@@ -27,8 +27,7 @@ var DataPoint = require('../../db/models/extensions/data-point')
 // Init //
 //------//
 
-var lazy = nh.lazyExtensions
-    , Environment = nh.Environment;
+var lazy = nh.lazyExtensions;
 
 bPromise.longStackTraces();
 var CURRENT_SOURCE = 'forecast_io';

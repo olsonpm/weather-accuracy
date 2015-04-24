@@ -18,15 +18,15 @@
                                 null
                             ]
                         },
-                        "dateTimeISO": "2015-03-15T00:00:00-07:00",
+                        "dateTimeISO": "2015-04-23T00:00:00-07:00",
                         "dewpt": {
-                            "avgC": 8.5,
-                            "avgF": 47.2,
-                            "count": 24,
-                            "maxC": 12,
-                            "maxF": 54,
-                            "minC": 5,
-                            "minF": 41
+                            "avgC": 8,
+                            "avgF": 46.3,
+                            "count": 25,
+                            "maxC": 9,
+                            "maxF": 48,
+                            "minC": 7,
+                            "minF": 45
                         },
                         "precip": {
                             "QC": "G",
@@ -39,36 +39,38 @@
                             "traceCount": 0
                         },
                         "pressure": {
-                            "avgIN": 30.04,
-                            "avgMB": 1017.3,
-                            "count": 24,
-                            "maxIN": 30.09,
-                            "maxMB": 1019,
-                            "minIN": 29.97,
-                            "minMB": 1015
+                            "avgIN": 29.89,
+                            "avgMB": 1012.2,
+                            "count": 25,
+                            "maxIN": 29.91,
+                            "maxMB": 1013,
+                            "minIN": 29.85,
+                            "minMB": 1011
                         },
                         "range": {
-                            "count": 24,
-                            "maxDateTimeISO": "2015-03-15T23:53:00-07:00",
-                            "maxTimestamp": 1426488780,
-                            "minDateTimeISO": "2015-03-15T00:53:00-07:00",
-                            "minTimestamp": 1426405980
+                            "count": 25,
+                            "maxDateTimeISO": "2015-04-23T23:53:00-07:00",
+                            "maxTimestamp": 1429858380,
+                            "minDateTimeISO": "2015-04-23T00:53:00-07:00",
+                            "minTimestamp": 1429775580
                         },
                         "rh": {
-                            "avg": 58,
-                            "count": 24,
+                            "avg": 71,
+                            "count": 25,
                             "max": 82,
-                            "min": 40
+                            "min": 56
                         },
                         "sky": {
-                            "avg": 85,
+                            "avg": 73,
                             "coded": [
+                                "SC",
                                 "BK",
-                                "OV"
+                                "OV",
+                                "FW"
                             ],
-                            "count": 24,
+                            "count": 25,
                             "max": 100,
-                            "min": 81
+                            "min": 19
                         },
                         "solrad": {
                             "avgWM2": null,
@@ -77,32 +79,32 @@
                             "minWM2": null
                         },
                         "spressure": {
-                            "avgIN": 29.95,
-                            "avgMB": 1014.3,
-                            "count": 24,
-                            "maxIN": 30,
-                            "maxMB": 1016,
-                            "minIN": 29.88,
-                            "minMB": 1012
+                            "avgIN": 29.8,
+                            "avgMB": 1009.2,
+                            "count": 25,
+                            "maxIN": 29.83,
+                            "maxMB": 1010,
+                            "minIN": 29.77,
+                            "minMB": 1008
                         },
                         "temp": {
-                            "avgC": 17,
-                            "avgF": 62.6,
-                            "count": 24,
-                            "maxC": 21,
-                            "maxF": 70,
-                            "minC": 13,
-                            "minF": 55
+                            "avgC": 13.2,
+                            "avgF": 55.8,
+                            "count": 25,
+                            "maxC": 17,
+                            "maxF": 63,
+                            "minC": 11,
+                            "minF": 52
                         },
-                        "timestamp": 1426402800,
+                        "timestamp": 1429772400,
                         "visibility": {
-                            "avgKM": 16.1,
-                            "avgMI": 10,
-                            "count": 24,
+                            "avgKM": 15.3,
+                            "avgMI": 9.5,
+                            "count": 25,
                             "maxKM": 16,
                             "maxMI": 10,
-                            "minKM": 16,
-                            "minMI": 10
+                            "minKM": 11,
+                            "minMI": 7
                         },
                         "weather": {
                             "coded": null,
@@ -113,21 +115,21 @@
                             "primaryCoded": "::BK"
                         },
                         "wind": {
-                            "avgKPH": 8.7,
-                            "avgKTS": 4.7,
-                            "avgMPH": 5.4,
-                            "count": 24,
-                            "gustKPH": null,
-                            "gustKTS": null,
-                            "gustMPH": null,
-                            "maxKPH": 24,
-                            "maxKTS": 13,
-                            "maxMPH": 15,
+                            "avgKPH": 16.1,
+                            "avgKTS": 8.7,
+                            "avgMPH": 10,
+                            "count": 25,
+                            "gustKPH": 35,
+                            "gustKTS": 19,
+                            "gustMPH": 22,
+                            "maxKPH": 30,
+                            "maxKTS": 16,
+                            "maxMPH": 18,
                             "minKPH": 0,
                             "minKTS": 0,
                             "minMPH": 0
                         },
-                        "ymd": 20150315
+                        "ymd": 20150423
                     }
                 }
             ],

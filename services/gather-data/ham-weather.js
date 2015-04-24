@@ -27,7 +27,8 @@ var DataPoint = require('../../db/models/extensions/data-point')
 // Init //
 //------//
 
-var lazy = nh.lazyExtensions;
+var lazy = nh.lazyExtensions
+    , log = new nh.LogProvider().getLogger();
 
 bPromise.longStackTraces();
 var CURRENT_SOURCE = 'ham_weather';
@@ -206,6 +207,7 @@ function getForecastDataPointDataPromise(aForecastDay, curLocation, gatherInst) 
 
 function getYmd(aMoment, gatherInst) {
     var dayYmd = aMoment.format('YYYYMMDD');
+    log.debug("ham-weather's dayYmd: " + dayYmd);
 
     return gatherInst.lazyYmds.mustFind(function(aYmd) {
         return aYmd.Value() === dayYmd;

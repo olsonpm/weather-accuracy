@@ -110,6 +110,7 @@ GatherDataScheduler.prototype._scheduleDataInsertions = function _scheduleDataIn
             var localHourForLocation = moment(curDateAtNoonObj).subtract(diffHours, 'hours').hour();
 
             log.info('Local hour equal to noon in ' + locationTZ + ': ' + localHourForLocation);
+            log.debug('*hardcoding local hour 22');
 
             var jobLocationsStr = lazy(locationArray)
                 .map(function(aLocation) {
@@ -119,7 +120,7 @@ GatherDataScheduler.prototype._scheduleDataInsertions = function _scheduleDataIn
 
             Schedule.scheduleJob({
                 dayOfWeek: [new Schedule.Range(0, 6)]
-                , hour: localHourForLocation
+                , hour: 22
                 , minute: 0
             }, function() {
                 log.info("Gathering data for " + jobLocationsStr);

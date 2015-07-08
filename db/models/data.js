@@ -201,7 +201,7 @@ Data.prototype.Key = function Key() {
 
 Data.equals = function static_equals(left, right) {
     if (!(Utils.instance_of(left, Data) && Utils.instance_of(right, Data))) {
-        throw new Error("Source.equals requires both arguments to be instance_of Data");
+        throw new Error("Data.equals requires both arguments to be instance_of Data");
     }
 
     return left.DataID() === right.DataID()

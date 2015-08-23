@@ -4,7 +4,8 @@
 // Imports //
 //---------//
 
-var Source = require('../source')
+var PGWrapper = require('pgwrapper')
+    , Source = require('../source')
     , nh = require('node-helpers');
 
 
@@ -12,8 +13,7 @@ var Source = require('../source')
 // Init //
 //------//
 
-var PGWrapper = nh.psqlWrapper.PGWrapper
-    , Utils = nh.utils
+var Utils = nh.utils
     , lazy = nh.lazyExtensions;
 
 

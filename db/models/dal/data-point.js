@@ -4,7 +4,8 @@
 // Imports //
 //---------//
 
-var DataPoint = require('../extensions/data-point')
+var PGWrapper = require('pgwrapper')
+    , DataPoint = require('../extensions/data-point')
     , YMD = require('../extensions/ymd')
     , DALData = require('./data')
     , DALMeasurementName = require('./measurement-name')
@@ -17,8 +18,7 @@ var DataPoint = require('../extensions/data-point')
 // Init //
 //------//
 
-var PGWrapper = nh.psqlWrapper.PGWrapper
-    , Utils = nh.utils
+var Utils = nh.utils
     , lazy = nh.lazyExtensions;
 
 

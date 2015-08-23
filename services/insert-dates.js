@@ -5,7 +5,8 @@
 // Imports //
 //---------//
 
-var nh = require('node-helpers')
+var PGWrapper = require('pgwrapper')
+    , nh = require('node-helpers')
     , moment = require('moment')
     , bPromise = require('bluebird')
     , YMD = require('../db/models/extensions/ymd')
@@ -16,8 +17,7 @@ var nh = require('node-helpers')
 // Init //
 //------//
 
-var PGWrapper = nh.psqlWrapper.PGWrapper
-    , Utils = nh.utils;
+var Utils = nh.utils;
 
 
 //------//

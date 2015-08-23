@@ -1,7 +1,7 @@
 'use strict';
 
 var nh = require('node-helpers');
-var PGConf = nh.psqlWrapper.PGConf;
+var PGConf = require('pgconf');
 var e = process.env;
 
 // if on heroku, then always use the DATABASE_URL environment variable

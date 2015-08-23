@@ -5,7 +5,8 @@
 // Imports //
 //---------//
 
-var moment = require('moment-timezone')
+var PGWrapper = require('pgwrapper')
+    , moment = require('moment-timezone')
     , DALLocation = require('../db/models/dal/location')
     , nh = require('node-helpers')
     , insertDates = require('../services/insert-dates')
@@ -20,8 +21,7 @@ var moment = require('moment-timezone')
 // Init //
 //------//
 
-var PGWrapper = nh.psqlWrapper.PGWrapper
-    , Utils = nh.utils
+var Utils = nh.utils
     , lazy = nh.lazyExtensions
     , LogProvider = nh.LogProvider;
 

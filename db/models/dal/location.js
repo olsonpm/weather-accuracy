@@ -4,7 +4,8 @@
 // Imports //
 //---------//
 
-var Location = require('../location')
+var PGWrapper = require('pgwrapper')
+    , Location = require('../location')
     , nh = require('node-helpers')
     , bPromise = require('bluebird');
 
@@ -13,8 +14,7 @@ var Location = require('../location')
 // Init //
 //------//
 
-var PGWrapper = nh.psqlWrapper.PGWrapper
-    , Utils = nh.utils
+var Utils = nh.utils
     , lazy = nh.lazyExtensions;
 
 

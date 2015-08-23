@@ -4,7 +4,8 @@
 // Imports //
 //---------//
 
-var Type = require('../type')
+var PGWrapper = require('pgwrapper')
+    , Type = require('../type')
     , nh = require('node-helpers');
 
 
@@ -12,8 +13,7 @@ var Type = require('../type')
 // Init //
 //------//
 
-var PGWrapper = nh.psqlWrapper.PGWrapper
-    , Utils = nh.utils
+var Utils = nh.utils
     , lazy = nh.lazyExtensions;
 
 

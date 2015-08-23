@@ -4,7 +4,8 @@
 // Imports //
 //---------//
 
-var MeasurementName = require('../measurement-name')
+var PGWrapper = require('pgwrapper')
+    , MeasurementName = require('../measurement-name')
     , DALUnit = require('./unit')
     , nh = require('node-helpers')
     , bPromise = require('bluebird');
@@ -14,8 +15,7 @@ var MeasurementName = require('../measurement-name')
 // Init //
 //------//
 
-var PGWrapper = nh.psqlWrapper.PGWrapper
-    , Utils = nh.utils
+var Utils = nh.utils
     , lazy = nh.lazyExtensions;
 
 

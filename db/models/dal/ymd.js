@@ -4,7 +4,8 @@
 // Imports //
 //---------//
 
-var YMD = require('../extensions/ymd')
+var PGWrapper = require('pgwrapper')
+    , YMD = require('../extensions/ymd')
     , nh = require('node-helpers')
     , moment = require('moment');
 
@@ -13,8 +14,7 @@ var YMD = require('../extensions/ymd')
 // Init //
 //------//
 
-var PGWrapper = nh.psqlWrapper.PGWrapper
-    , Utils = nh.utils
+var Utils = nh.utils
     , lazy = nh.lazyExtensions;
 
 

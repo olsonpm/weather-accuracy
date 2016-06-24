@@ -146,7 +146,7 @@ DataLogic.prototype.updateGraphData = function updateGraphData() {
                 aggregate: []
                 , tmpAggregate: {}
             };
-            state.lazySources.each(function(aSource, i) {
+            state.lazySources.each(function(aSource) {
                 graphData[aSource.SourceID()] = [];
                 graphData.tmpAggregate[aSource.SourceID()] = 0;
             });
@@ -187,16 +187,11 @@ DataLogic.prototype.updateGraphData = function updateGraphData() {
             filterAsyncHandle.onComplete(function() {
                 filteredRes = lazy(filteredRes).memoize();
                 return bPromise.resolve([
-                        getActualDataPoints(filteredRes)
-                        , filteredRes
+                        getForecastedDataPoints(filteredRes, currentTypeID)
+                        , getActualDataPoints(filteredRes)
                         , state
                         , graphData
                     ])
-                    .spread(function(forecastedArray, filteredRes, state, graphData) {
-                        return bPromise.resolve([
-                            forecastedArray, forecastedArray, state, graphData
-                        ]);
-                    })
                     .spread(function(forecastedArray, actualArray, state, graphData) {
                         graphData = setGraphData(forecastedArray, actualArray, state, graphData);
 
@@ -355,63 +350,25 @@ DataLogic.prototype.initializeSources = function initializeSources() {
 //---------//
 
 function getForecastedDataPoints(lazyDataPoints, currentTypeID) {
-    var filterRes = [];
-    var sortedRes = [];
     return lazyDataPoints
         .filter(function specificLocation(aDataPoint) {
             return currentTypeID === aDataPoint.Data().Type().TypeID();
         })
-        .async()
-        .each(function(aFilteredDataPoint) {
-            if (aFilteredDataPoint) {
-                filterRes.push(aFilteredDataPoint);
-            }
+        .sort(function(left, right) {
+            return left.Data().YMD().Value() - right.Data().YMD().Value();
         })
-        .then(function() {
-            return lazy(filterRes).memoize()
-                .sort(function(left, right) {
-                    return left.Data().YMD().Value() - right.Data().YMD().Value();
-                })
-                .async()
-                .each(function(aSortedDataPoint) {
-                    if (aSortedDataPoint) {
-                        sortedRes.push(aSortedDataPoint);
-                    }
-                })
-                .then(function() {
-                    return sortedRes;
-                });
-        });
+        .toArray();
 }
 
 function getActualDataPoints(lazyDataPoints) {
-    var filterRes = [];
-    var sortedRes = [];
     return lazyDataPoints
         .filter(function specificLocation(aDataPoint) {
             return aDataPoint.Data().Type().Name() === Type.NAMES.ACTUAL;
         })
-        .async()
-        .each(function(aDataPoint) {
-            if (aDataPoint) {
-                filterRes.push(aDataPoint);
-            }
+        .sort(function(left, right) {
+            return left.Data().YMD().Value() - right.Data().YMD().Value();
         })
-        .then(function() {
-            return lazy(filterRes).memoize()
-                .sort(function(left, right) {
-                    return left.Data().YMD().Value() - right.Data().YMD().Value();
-                })
-                .async()
-                .each(function(aDataPoint) {
-                    if (aDataPoint) {
-                        sortedRes.push(aDataPoint);
-                    }
-                })
-                .then(function() {
-                    return sortedRes;
-                });
-        });
+        .toArray();
 }
 
 function setGraphData(forecastedArray, actualArray, state, graphData) {

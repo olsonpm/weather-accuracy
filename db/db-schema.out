@@ -2,12 +2,16 @@
 -- PostgreSQL database dump
 --
 
+-- Dumped from database version 9.5.3
+-- Dumped by pg_dump version 9.5.3
+
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
+SET row_security = off;
 
 --
 -- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
@@ -30,7 +34,7 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: weather_data; Type: TABLE; Schema: public; Owner: phil; Tablespace: 
+-- Name: weather_data; Type: TABLE; Schema: public; Owner: phil
 --
 
 CREATE TABLE weather_data (
@@ -45,7 +49,7 @@ CREATE TABLE weather_data (
 ALTER TABLE weather_data OWNER TO phil;
 
 --
--- Name: weather_data_point; Type: TABLE; Schema: public; Owner: phil; Tablespace: 
+-- Name: weather_data_point; Type: TABLE; Schema: public; Owner: phil
 --
 
 CREATE TABLE weather_data_point (
@@ -59,7 +63,7 @@ CREATE TABLE weather_data_point (
 ALTER TABLE weather_data_point OWNER TO phil;
 
 --
--- Name: weather_data_point_name; Type: TABLE; Schema: public; Owner: phil; Tablespace: 
+-- Name: weather_data_point_name; Type: TABLE; Schema: public; Owner: phil
 --
 
 CREATE TABLE weather_data_point_name (
@@ -93,7 +97,7 @@ ALTER SEQUENCE weather_data_point_name_weather_data_point_name_id_seq OWNED BY w
 
 
 --
--- Name: weather_data_point_unit; Type: TABLE; Schema: public; Owner: phil; Tablespace: 
+-- Name: weather_data_point_unit; Type: TABLE; Schema: public; Owner: phil
 --
 
 CREATE TABLE weather_data_point_unit (
@@ -147,7 +151,7 @@ ALTER SEQUENCE weather_data_point_weather_data_point_id_seq OWNED BY weather_dat
 
 
 --
--- Name: weather_data_type; Type: TABLE; Schema: public; Owner: phil; Tablespace: 
+-- Name: weather_data_type; Type: TABLE; Schema: public; Owner: phil
 --
 
 CREATE TABLE weather_data_type (
@@ -201,7 +205,7 @@ ALTER SEQUENCE weather_data_weather_data_id_seq OWNED BY weather_data.weather_da
 
 
 --
--- Name: weather_date; Type: TABLE; Schema: public; Owner: phil; Tablespace: 
+-- Name: weather_date; Type: TABLE; Schema: public; Owner: phil
 --
 
 CREATE TABLE weather_date (
@@ -234,7 +238,7 @@ ALTER SEQUENCE weather_date_weather_date_id_seq OWNED BY weather_date.weather_da
 
 
 --
--- Name: weather_location; Type: TABLE; Schema: public; Owner: phil; Tablespace: 
+-- Name: weather_location; Type: TABLE; Schema: public; Owner: phil
 --
 
 CREATE TABLE weather_location (
@@ -270,7 +274,7 @@ ALTER SEQUENCE weather_location_weather_location_id_seq OWNED BY weather_locatio
 
 
 --
--- Name: weather_source; Type: TABLE; Schema: public; Owner: phil; Tablespace: 
+-- Name: weather_source; Type: TABLE; Schema: public; Owner: phil
 --
 
 CREATE TABLE weather_source (
@@ -359,7 +363,7 @@ ALTER TABLE ONLY weather_source ALTER COLUMN weather_source_id SET DEFAULT nextv
 
 
 --
--- Name: weather_data_id_point_name_key; Type: CONSTRAINT; Schema: public; Owner: phil; Tablespace: 
+-- Name: weather_data_id_point_name_key; Type: CONSTRAINT; Schema: public; Owner: phil
 --
 
 ALTER TABLE ONLY weather_data_point
@@ -367,7 +371,7 @@ ALTER TABLE ONLY weather_data_point
 
 
 --
--- Name: weather_data_pkey; Type: CONSTRAINT; Schema: public; Owner: phil; Tablespace: 
+-- Name: weather_data_pkey; Type: CONSTRAINT; Schema: public; Owner: phil
 --
 
 ALTER TABLE ONLY weather_data
@@ -375,7 +379,7 @@ ALTER TABLE ONLY weather_data
 
 
 --
--- Name: weather_data_point_name_pkey; Type: CONSTRAINT; Schema: public; Owner: phil; Tablespace: 
+-- Name: weather_data_point_name_pkey; Type: CONSTRAINT; Schema: public; Owner: phil
 --
 
 ALTER TABLE ONLY weather_data_point_name
@@ -383,7 +387,7 @@ ALTER TABLE ONLY weather_data_point_name
 
 
 --
--- Name: weather_data_point_name_weather_data_point_name_value_key; Type: CONSTRAINT; Schema: public; Owner: phil; Tablespace: 
+-- Name: weather_data_point_name_weather_data_point_name_value_key; Type: CONSTRAINT; Schema: public; Owner: phil
 --
 
 ALTER TABLE ONLY weather_data_point_name
@@ -391,7 +395,7 @@ ALTER TABLE ONLY weather_data_point_name
 
 
 --
--- Name: weather_data_point_pkey; Type: CONSTRAINT; Schema: public; Owner: phil; Tablespace: 
+-- Name: weather_data_point_pkey; Type: CONSTRAINT; Schema: public; Owner: phil
 --
 
 ALTER TABLE ONLY weather_data_point
@@ -399,7 +403,7 @@ ALTER TABLE ONLY weather_data_point
 
 
 --
--- Name: weather_data_point_unit_name_key; Type: CONSTRAINT; Schema: public; Owner: phil; Tablespace: 
+-- Name: weather_data_point_unit_name_key; Type: CONSTRAINT; Schema: public; Owner: phil
 --
 
 ALTER TABLE ONLY weather_data_point_unit
@@ -407,7 +411,7 @@ ALTER TABLE ONLY weather_data_point_unit
 
 
 --
--- Name: weather_data_point_unit_pkey; Type: CONSTRAINT; Schema: public; Owner: phil; Tablespace: 
+-- Name: weather_data_point_unit_pkey; Type: CONSTRAINT; Schema: public; Owner: phil
 --
 
 ALTER TABLE ONLY weather_data_point_unit
@@ -415,7 +419,7 @@ ALTER TABLE ONLY weather_data_point_unit
 
 
 --
--- Name: weather_data_type_name_key; Type: CONSTRAINT; Schema: public; Owner: phil; Tablespace: 
+-- Name: weather_data_type_name_key; Type: CONSTRAINT; Schema: public; Owner: phil
 --
 
 ALTER TABLE ONLY weather_data_type
@@ -423,7 +427,7 @@ ALTER TABLE ONLY weather_data_type
 
 
 --
--- Name: weather_data_type_pkey; Type: CONSTRAINT; Schema: public; Owner: phil; Tablespace: 
+-- Name: weather_data_type_pkey; Type: CONSTRAINT; Schema: public; Owner: phil
 --
 
 ALTER TABLE ONLY weather_data_type
@@ -431,7 +435,7 @@ ALTER TABLE ONLY weather_data_type
 
 
 --
--- Name: weather_data_type_source_date_location_key; Type: CONSTRAINT; Schema: public; Owner: phil; Tablespace: 
+-- Name: weather_data_type_source_date_location_key; Type: CONSTRAINT; Schema: public; Owner: phil
 --
 
 ALTER TABLE ONLY weather_data
@@ -439,7 +443,7 @@ ALTER TABLE ONLY weather_data
 
 
 --
--- Name: weather_date_pkey; Type: CONSTRAINT; Schema: public; Owner: phil; Tablespace: 
+-- Name: weather_date_pkey; Type: CONSTRAINT; Schema: public; Owner: phil
 --
 
 ALTER TABLE ONLY weather_date
@@ -447,7 +451,7 @@ ALTER TABLE ONLY weather_date
 
 
 --
--- Name: weather_date_value_key; Type: CONSTRAINT; Schema: public; Owner: phil; Tablespace: 
+-- Name: weather_date_value_key; Type: CONSTRAINT; Schema: public; Owner: phil
 --
 
 ALTER TABLE ONLY weather_date
@@ -455,7 +459,7 @@ ALTER TABLE ONLY weather_date
 
 
 --
--- Name: weather_location_latitude_longitude_key; Type: CONSTRAINT; Schema: public; Owner: phil; Tablespace: 
+-- Name: weather_location_latitude_longitude_key; Type: CONSTRAINT; Schema: public; Owner: phil
 --
 
 ALTER TABLE ONLY weather_location
@@ -463,7 +467,7 @@ ALTER TABLE ONLY weather_location
 
 
 --
--- Name: weather_location_pkey; Type: CONSTRAINT; Schema: public; Owner: phil; Tablespace: 
+-- Name: weather_location_pkey; Type: CONSTRAINT; Schema: public; Owner: phil
 --
 
 ALTER TABLE ONLY weather_location
@@ -471,7 +475,7 @@ ALTER TABLE ONLY weather_location
 
 
 --
--- Name: weather_source_name_key; Type: CONSTRAINT; Schema: public; Owner: phil; Tablespace: 
+-- Name: weather_source_name_key; Type: CONSTRAINT; Schema: public; Owner: phil
 --
 
 ALTER TABLE ONLY weather_source
@@ -479,19 +483,11 @@ ALTER TABLE ONLY weather_source
 
 
 --
--- Name: weather_source_pkey; Type: CONSTRAINT; Schema: public; Owner: phil; Tablespace: 
+-- Name: weather_source_pkey; Type: CONSTRAINT; Schema: public; Owner: phil
 --
 
 ALTER TABLE ONLY weather_source
     ADD CONSTRAINT weather_source_pkey PRIMARY KEY (weather_source_id);
-
-
---
--- Name: weather_data_point_name_weather_data_point_name_unit_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: phil
---
-
-ALTER TABLE ONLY weather_data_point_name
-    ADD CONSTRAINT weather_data_point_name_weather_data_point_name_unit_id_fkey FOREIGN KEY (weather_data_point_name_unit_id) REFERENCES weather_data_point_unit(weather_data_point_unit_id);
 
 
 --
@@ -500,46 +496,6 @@ ALTER TABLE ONLY weather_data_point_name
 
 ALTER TABLE ONLY weather_data_point
     ADD CONSTRAINT weather_data_point_weather_data_point_data_id_fkey FOREIGN KEY (weather_data_point_data_id) REFERENCES weather_data(weather_data_id);
-
-
---
--- Name: weather_data_point_weather_data_point_name_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: phil
---
-
-ALTER TABLE ONLY weather_data_point
-    ADD CONSTRAINT weather_data_point_weather_data_point_name_id_fkey FOREIGN KEY (weather_data_point_name_id) REFERENCES weather_data_point_name(weather_data_point_name_id);
-
-
---
--- Name: weather_data_weather_data_date_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: phil
---
-
-ALTER TABLE ONLY weather_data
-    ADD CONSTRAINT weather_data_weather_data_date_id_fkey FOREIGN KEY (weather_data_date_id) REFERENCES weather_date(weather_date_id);
-
-
---
--- Name: weather_data_weather_data_location_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: phil
---
-
-ALTER TABLE ONLY weather_data
-    ADD CONSTRAINT weather_data_weather_data_location_id_fkey FOREIGN KEY (weather_data_location_id) REFERENCES weather_location(weather_location_id);
-
-
---
--- Name: weather_data_weather_data_source_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: phil
---
-
-ALTER TABLE ONLY weather_data
-    ADD CONSTRAINT weather_data_weather_data_source_id_fkey FOREIGN KEY (weather_data_source_id) REFERENCES weather_source(weather_source_id);
-
-
---
--- Name: weather_data_weather_data_type_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: phil
---
-
-ALTER TABLE ONLY weather_data
-    ADD CONSTRAINT weather_data_weather_data_type_id_fkey FOREIGN KEY (weather_data_type_id) REFERENCES weather_data_type(weather_data_type_id);
 
 
 --
@@ -716,24 +672,6 @@ REVOKE ALL ON SEQUENCE weather_source_weather_source_id_seq FROM phil;
 GRANT ALL ON SEQUENCE weather_source_weather_source_id_seq TO phil;
 GRANT SELECT ON SEQUENCE weather_source_weather_source_id_seq TO schemaspy;
 GRANT ALL ON SEQUENCE weather_source_weather_source_id_seq TO weather_accuracy;
-
-
---
--- Name: DEFAULT PRIVILEGES FOR SEQUENCES; Type: DEFAULT ACL; Schema: public; Owner: phil
---
-
-ALTER DEFAULT PRIVILEGES FOR ROLE phil IN SCHEMA public REVOKE ALL ON SEQUENCES  FROM PUBLIC;
-ALTER DEFAULT PRIVILEGES FOR ROLE phil IN SCHEMA public REVOKE ALL ON SEQUENCES  FROM phil;
-ALTER DEFAULT PRIVILEGES FOR ROLE phil IN SCHEMA public GRANT ALL ON SEQUENCES  TO weather_accuracy;
-
-
---
--- Name: DEFAULT PRIVILEGES FOR TABLES; Type: DEFAULT ACL; Schema: public; Owner: phil
---
-
-ALTER DEFAULT PRIVILEGES FOR ROLE phil IN SCHEMA public REVOKE ALL ON TABLES  FROM PUBLIC;
-ALTER DEFAULT PRIVILEGES FOR ROLE phil IN SCHEMA public REVOKE ALL ON TABLES  FROM phil;
-ALTER DEFAULT PRIVILEGES FOR ROLE phil IN SCHEMA public GRANT ALL ON TABLES  TO weather_accuracy;
 
 
 --

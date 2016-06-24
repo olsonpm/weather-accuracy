@@ -23,7 +23,6 @@ require('imagesloaded'); // will attach itself to the window.jQuery object.
 
 // (should correspond to sass variable)
 var MAX_SIZE = 525;
-var MIN_GRAPH_MARGIN = 100;
 var GRAPH_HEIGHT = 70;
 
 //------//
@@ -48,7 +47,6 @@ module.exports = function(app, log) {
 
             // start with a line graph yo!
             var svg = {};
-            var viewportWidth = window.innerWidth;
             var leftMargin = calculateResponsiveLength(25);
             var commonMargin = calculateResponsiveLength(10);
             var translateX = roundn((leftMargin + commonMargin) / 2, 0);
@@ -296,7 +294,6 @@ module.exports = function(app, log) {
                 yAxis.ticks(numYTicks);
 
                 var numXTicks = Math.abs(moments.from.diff(moments.to, 'days')) + 1;
-                var xAxisTickResolution = numXTicks / width * 100;
                 xAxis.ticks(Math.min(numXTicks, roundn(3 * width / 100, 0)));
                 xAxis.tickFormat(dateOutputFormat);
 

@@ -23,10 +23,7 @@ var ptr = require('promise-task-runner')
     , vTransform = require('vinyl-transform')
     , bRimraf = bPromise.promisify(require('rimraf'))
     , bMkdirp = bPromise.promisify(require('mkdirp'))
-    , GatherDataScheduler = require('../services/gather-data-scheduler')
-    , insertDates = require('../services/insert-dates')
-    , confs = require('../utils/pg-confs');
-
+    ;
 
 //------//
 // Init //
@@ -36,7 +33,7 @@ var PromiseTask = ptr.PromiseTask
     , TaskDependency = ptr.TaskDependency
     , PromiseTaskContainer = ptr.PromiseTaskContainer
     , Environment = nh.Environment
-    , lazy = nh.lazyExtensions;
+    ;
 
 var log = new(nh.LogProvider)()
     .EnvInst(new Environment().HardCoded('dev'))
@@ -122,11 +119,8 @@ var htmlWatch = new PromiseTask()
     .task(function() {
         var self = this;
 
-        var envInst = new Environment()
-            .HardCoded(self.globalArgs().env);
-
         var watcher = vFs.watch(srcHtml);
-        watcher.on('change', function(fpath) {
+        watcher.on('change', function() {
             try {
                 build
                     .globalArgs(self.globalArgs())
@@ -172,12 +166,6 @@ var startServer = new PromiseTask()
         var port = process.env.PORT || 5000;
         app.listen(port);
         log.info(envInst.curEnv() + " server listening on port " + port);
-
-        log.info('Inserting current dates and starting the data gathering scheduler');
-        var pgWrapInst = confs[envInst.curEnv()].GeneratePGWrapper();
-        insertDates(pgWrapInst);
-        var gds = new GatherDataScheduler(pgWrapInst, envInst);
-        gds.startScheduler();
     });
 
 var buildThenStartServer = new PromiseTask()
@@ -209,8 +197,7 @@ var startLr = new PromiseTask()
 //-------------//
 
 function injector(env) {
-    var curEnv = env.curEnv();
-    return new vTransform(function(filename) {
+    return new vTransform(function() {
         var cssInject = "<!-- inject:css -->";
         var jsInject = "<!-- inject:js -->";
         var endInject = "<!-- endinject -->";
@@ -223,8 +210,6 @@ function injector(env) {
             ? "index.min.js"
             : "index.js";
 
-        var indexCssOut = path.join(curEnv, indexCssRel);
-        var indexJsOut = path.join(curEnv, indexJsRel);
         var injectedCss = '<link rel="stylesheet" type="text/css" href="' + indexCssRel + '">';
         var injectedJs = '<script src="' + indexJsRel + '"></script>';
 

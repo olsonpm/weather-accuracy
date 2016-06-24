@@ -9,7 +9,8 @@ var nh = require('node-helpers')
     , moment = require('moment')
     , bPromise = require('bluebird')
     , YMD = require('../db/models/extensions/ymd')
-    , DALymd = require('../db/models/dal/ymd');
+    , DALymd = require('../db/models/dal/ymd')
+    ;
 
 
 //------//

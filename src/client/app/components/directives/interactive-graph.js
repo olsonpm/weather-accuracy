@@ -21,7 +21,7 @@ var envInst = new nh.Environment();
 
 module.exports = function(app, log) {
     app.directive('interactiveGraph', function() {
-        function controllerFn($scope, $element, $attrs) {
+        function controllerFn($scope, $element) {
             var graphsDirective = $element.children('graphs').eq(0);
             var graphOptionsDirective = $element.children('graph-options').eq(0);
 

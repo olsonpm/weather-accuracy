@@ -2,12 +2,16 @@
 -- PostgreSQL database dump
 --
 
+-- Dumped from database version 9.5.3
+-- Dumped by pg_dump version 9.5.3
+
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
+SET row_security = off;
 
 SET search_path = public, pg_catalog;
 
@@ -16,7 +20,7 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: weather_data_point_unit; Type: TABLE; Schema: public; Owner: phil; Tablespace: 
+-- Name: weather_data_point_unit; Type: TABLE; Schema: public; Owner: phil
 --
 
 CREATE TABLE weather_data_point_unit (
@@ -56,7 +60,7 @@ ALTER TABLE ONLY weather_data_point_unit ALTER COLUMN weather_data_point_unit_id
 
 
 --
--- Name: weather_data_point_unit_name_key; Type: CONSTRAINT; Schema: public; Owner: phil; Tablespace: 
+-- Name: weather_data_point_unit_name_key; Type: CONSTRAINT; Schema: public; Owner: phil
 --
 
 ALTER TABLE ONLY weather_data_point_unit
@@ -64,7 +68,7 @@ ALTER TABLE ONLY weather_data_point_unit
 
 
 --
--- Name: weather_data_point_unit_pkey; Type: CONSTRAINT; Schema: public; Owner: phil; Tablespace: 
+-- Name: weather_data_point_unit_pkey; Type: CONSTRAINT; Schema: public; Owner: phil
 --
 
 ALTER TABLE ONLY weather_data_point_unit

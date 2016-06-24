@@ -28,8 +28,7 @@ var GatherHamData = require('../../../services/gather-data/ham-weather')
 // Init //
 //------//
 
-var PGConf = nh.psqlWrapper.PGConf
-    , lazy = nh.lazyExtensions
+var lazy = nh.lazyExtensions
     , Utils = nh.utils
     , assert = chai.assert;
 
@@ -58,8 +57,7 @@ suite("gather_ham_data", function gather_ham_data() {
     var actualMoment = moment(0, 'H').subtract(1, 'day');
     var actualData = testActual.response[0].periods[0].summary;
 
-    var bTestVars
-        , gatherInst
+    var gatherInst
         , richmond
         , allLocations;
 

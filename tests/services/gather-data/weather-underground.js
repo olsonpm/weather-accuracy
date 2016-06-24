@@ -28,8 +28,7 @@ var GatherWundergroundData = require('../../../services/gather-data/weather-unde
 // Init //
 //------//
 
-var PGConf = nh.psqlWrapper.PGConf
-    , lazy = nh.lazyExtensions
+var lazy = nh.lazyExtensions
     , Utils = nh.utils
     , assert = chai.assert;
 
@@ -58,8 +57,7 @@ suite("gather_wunderground_data", function gather_wunderground_data() {
     var actualData = testActual.history.dailysummary[0];
     var actualMoment = moment(0, 'H').subtract(1, 'day');
 
-    var bTestVars
-        , gatherInst
+    var gatherInst
         , richmond
         , allLocations;
 

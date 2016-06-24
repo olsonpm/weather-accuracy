@@ -8,19 +8,17 @@ var DataPoint = require('../../db/models/extensions/data-point')
     , Data = require('../../db/models/extensions/data')
     , Type = require('../../db/models/extensions/type')
     , MeasurementName = require('../../db/models/extensions/measurement-name')
-    , Location = require('../../db/models/extensions/location')
     , DALDataPoint = require('../../db/models/dal/data-point')
     , DALData = require('../../db/models/dal/data')
     , DALSource = require('../../db/models/dal/source')
     , DALType = require('../../db/models/dal/type')
     , DALymd = require('../../db/models/dal/ymd')
     , DALMeasurementName = require('../../db/models/dal/measurement-name')
-    , bFs = require('fs-bluebird')
     , nh = require('node-helpers')
     , bRequest = require('request-promise')
     , bPromise = require('bluebird')
     , moment = require('moment')
-    , pconf = require('../../package.json');
+    ;
 
 
 //------//

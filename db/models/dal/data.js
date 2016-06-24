@@ -5,8 +5,7 @@
 // Imports //
 //---------//
 
-var DataPoint = require('../extensions/data-point')
-    , YMD = require('../extensions/ymd')
+var YMD = require('../extensions/ymd')
     , Source = require('../extensions/source')
     , nh = require('node-helpers')
     , moment = require('moment')

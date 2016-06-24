@@ -6,8 +6,7 @@
 // Imports //
 //---------//
 
-var nh = require('node-helpers')
-    , chai = require('chai')
+var chai = require('chai')
     , DataPoint = require('../../models/extensions/data-point')
     , Data = require('../../models/extensions/data')
     , MeasurementName = require('../../models/extensions/measurement-name')
@@ -22,9 +21,7 @@ var nh = require('node-helpers')
 // Init //
 //------//
 
-var lazy = nh.lazyExtensions
-    , PGConf = nh.psqlWrapper.PGConf
-    , assert = chai.assert;
+var assert = chai.assert;
 
 bPromise.longStackTraces();
 chai.config.includeStack = true;

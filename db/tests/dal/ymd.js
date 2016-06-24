@@ -6,9 +6,7 @@
 // Imports //
 //---------//
 
-var nh = require('node-helpers')
-    , chai = require('chai')
-    , moment = require('moment')
+var chai = require('chai')
     , YMD = require('../../models/extensions/ymd')
     , DALymd = require('../../models/dal/ymd')
     , bPromise = require('bluebird')
@@ -19,9 +17,7 @@ var nh = require('node-helpers')
 // Init //
 //------//
 
-var lazy = nh.lazyExtensions
-    , PGConf = nh.psqlWrapper.PGConf
-    , assert = chai.assert;
+var assert = chai.assert;
 
 bPromise.longStackTraces();
 chai.config.includeStack = true;

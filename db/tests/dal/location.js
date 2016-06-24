@@ -6,8 +6,7 @@
 // Imports //
 //---------//
 
-var nh = require('node-helpers')
-    , chai = require('chai')
+var chai = require('chai')
     , Location = require('../../models/extensions/location')
     , DALLocation = require('../../models/dal/location')
     , bPromise = require('bluebird')
@@ -18,9 +17,7 @@ var nh = require('node-helpers')
 // Init //
 //------//
 
-var lazy = nh.lazyExtensions
-    , PGConf = nh.psqlWrapper.PGConf
-    , assert = chai.assert;
+var assert = chai.assert;
 
 bPromise.longStackTraces();
 chai.config.includeStack = true;
@@ -81,7 +78,7 @@ suite("DALLocation", function() {
                     dalLocationInst.getLocationFromLatLong(CONST_LOCATIONS[i])
                     , i
                 )
-                .then(function(res, i) {
+                .then(function(res) {
                     assert.strictEqual(res[0].LocationID(), CONST_LOCATIONS[res[1]].LocationID());
                     assert.strictEqual(res[0].Latitude(), CONST_LOCATIONS[res[1]].Latitude());
                     assert.strictEqual(res[0].Longitude(), CONST_LOCATIONS[res[1]].Longitude());

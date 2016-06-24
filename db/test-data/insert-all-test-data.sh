@@ -11,6 +11,17 @@ DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 connectToDb="-h /run/postgresql/ -d ${dbName}"
 
 
+psql ${connectToDb} -c 'truncate table
+ weather_data_type,
+ weather_source,
+ weather_date,
+ weather_location,
+ weather_data_point_unit,
+ weather_data_point_name,
+ weather_data,
+ weather_data_point
+'
+
 cat \
 "${DIR}/weather_data_type.sql" \
 "${DIR}/weather_source.sql" \

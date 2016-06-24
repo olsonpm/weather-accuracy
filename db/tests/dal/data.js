@@ -6,8 +6,7 @@
 // Imports //
 //---------//
 
-var nh = require('node-helpers')
-    , chai = require('chai')
+var chai = require('chai')
     , Data = require('../../models/extensions/data')
     , Type = require('../../models/extensions/type')
     , Source = require('../../models/extensions/source')
@@ -23,9 +22,7 @@ var nh = require('node-helpers')
 // Init //
 //------//
 
-var lazy = nh.lazyExtensions
-    , PGConf = nh.psqlWrapper.PGConf
-    , assert = chai.assert;
+var assert = chai.assert;
 
 bPromise.longStackTraces();
 chai.config.includeStack = true;
@@ -47,7 +44,12 @@ suite("DALData", function() {
         , new Data().Type(new Type().TypeID('1')).Source(new Source().SourceID('1')).YMD(new YMD().YMDid('1'))
     ];
 
-    var CONST_LOCATION = new Location().LocationID('4').Latitude('30.2500').Longitude('-97.7500').Name('Austin, TX');
+    var CONST_LOCATION = new Location()
+      .LocationID('4')
+      .Latitude('30.2500')
+      .Longitude('-97.7500')
+      .Name('Austin, TX')
+      .TZ('America/Chicago');
 
     test("getDataBetweenDates", function getDataBetweenDates() {
         return dalDataInst.getDataBetweenDates('20150101', '20150106')

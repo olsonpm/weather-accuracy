@@ -8,7 +8,7 @@
   "version": "0.1.0",
   "description": "",
   "main": "index.js",
-  "author": "Phil Olson <philip.olson@protonmail.ch> (https://github.com/olsonpm)",
+  "author": "phil olson",
   "name": "weather-accuracy",
   "browserify": {
     "transform": "browserify-shim"
@@ -67,7 +67,7 @@
     "moment": "^2.9.0",
     "moment-timezone": "^0.3.0",
     "ncp": "^2.0.0",
-    "node-helpers": "git://github.com/olsonpm/node-helpers",
+    "node-helpers": "git://github.com/olsonpm/node-helpers#f1b691",
     "node-sass-bluebird": "git://github.com/olsonpm/node-sass-bluebird.git",
     "node-schedule": "^0.2.6",
     "normalize.scss": "git://github.com/olsonpm/normalize.scss.git",

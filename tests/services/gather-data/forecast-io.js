@@ -28,8 +28,7 @@ var GatherFioData = require('../../../services/gather-data/forecast-io')
 // Init //
 //------//
 
-var PGConf = nh.psqlWrapper.PGConf
-    , lazy = nh.lazyExtensions
+var lazy = nh.lazyExtensions
     , Utils = nh.utils
     , assert = chai.assert;
 
@@ -58,8 +57,7 @@ suite("gather_fio_data", function gather_fio_data() {
     var actualMoment = moment(0, 'H').subtract(1, 'day');
     var actualData = testActual.daily.data[0];
 
-    var bTestVars
-        , gatherInst
+    var gatherInst
         , richmond
         , allLocations;
 

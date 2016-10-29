@@ -1,6 +1,4 @@
-node_modules
-*.log
-dev
-test
-prod
-src/client/app/templates.js
+/node_modules
+/src/client/app/templates.js
+/release
+/test.js

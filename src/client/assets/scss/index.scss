@@ -9,7 +9,7 @@
 // These relative paths will screw up the source maps, but I've decided
 //   that's better than than having to copy the files locally every time the library updates
 @import '../../../../node_modules/normalize.scss/normalize.scss';
-@import '../../../../node_modules/perfect-scrollbar/src/perfect-scrollbar';
+@import '../../../../node_modules/perfect-scrollbar/src/perfect-scrollbar.scss';
 @import '../../../../node_modules/pikaday/scss/pikaday.scss';
 @import '../../../../node_modules/fancybox/dist/scss/jquery.fancybox.scss';
 @import 'partials/perfect-scrollbar-overrides';

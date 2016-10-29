@@ -1,45 +1,72 @@
 'use strict';
 
+
 //---------//
 // Imports //
 //---------//
 
-var path = require('path')
-    , Routes = require('../shared/routes')
-    , l = require('lambda-js')
-    , initApi = require('./init-api');
+const compression = require('compression')
+  , express = require('express')
+  , initApi = require('./init-api')
+  , Routes = require('../shared/routes')
+  ;
+
 
 //------//
 // Init //
 //------//
 
-var routesInst = new Routes();
+const app = express()
+  , path = require('path')
+  , routesInst = new Routes()
+  ;
 
 
 //------//
 // Main //
 //------//
 
-module.exports = function(app, envInst, currentDir) {
-    var routeSeq = routesInst.env(envInst.curEnv()).routeSeq();
-    var singlePage = path.join(currentDir, envInst.curEnv(), 'index.html');
+const getRequestListener = letsencryptDir => {
+  const routeSeq = routesInst.routeSeq()
+    , singlePage = path.join(__dirname, 'index.html')
+    ;
 
-    routeSeq
-        .where(l('r', 'r.name !== "otherwise"'))
-        .each(function(r) {
-            app.get(r.url, function(req, res) {
-                res.sendFile(singlePage);
-            });
-        });
+  app.use(compression());
 
-    initApi(app, envInst);
+  if (letsencryptDir) {
+    app.use(express.static(letsencryptDir, {
+      dotfiles: 'allow'
+    }));
+  }
 
-    // special cases
-    app.get('/', function(req, res) {
-        res.sendFile(singlePage);
+  app.use(express.static(path.join(__dirname, 'static')));
+
+  routeSeq
+    .where(r => r.name !== "otherwise")
+    .each(r => {
+      app.get(
+        r.url
+        , (req, res) => { res.sendFile(singlePage); }
+      );
     });
-    app.get("*", function(req, res) {
-        res.status(404);
-        res.sendFile(singlePage);
-    });
+
+  initApi(app);
+
+  // special cases
+  app.get('/', (req, res) => {
+    res.sendFile(singlePage);
+  });
+  app.get("*", (req, res) => {
+    res.status(404);
+    res.sendFile(singlePage);
+  });
+
+  return app;
 };
+
+
+//---------//
+// Exports //
+//---------//
+
+module.exports = { getRequestListener };

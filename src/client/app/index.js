@@ -1,11 +1,13 @@
 'use strict';
 
+
 //---------//
 // Imports //
 //---------//
 
 var angular = require('angular')
-    , nh = require('node-helpers');
+  , nh = require('node-helpers')
+  ;
 
 
 //------//
@@ -13,10 +15,9 @@ var angular = require('angular')
 //------//
 
 var appName = 'weatherAccuracy';
-var envInst = new nh.Environment();
 var log = new nh.LogProvider()
-    .AppName(appName)
-    .getLogger();
+  .AppName(appName)
+  .getLogger();
 
 // initialize personal jquery plugins
 require('personal-jquery-plugins').initAll((require('jquery')));
@@ -25,11 +26,12 @@ var app = angular.module(appName, [require('angular-route')]);
 // load the template cache
 require('./templates');
 
+
 //------------//
 // Add Routes //
 //------------//
 
-require('./routes')(app, envInst.curEnv());
+require('./routes')(app);
 
 
 //-----------------//

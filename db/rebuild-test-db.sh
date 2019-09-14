@@ -18,6 +18,8 @@ psql ${psqlConnect} -c "create database weather_accuracy_test"
 
 ./generate-db-schema.sh
 
+psql ${connectToDb} -f -c "drop role weather_accuracy_test"
+psql ${connectToDb} -1 -c "create role weather_accuracy_test"
 psql ${connectToDb} -1 -f ./db-schema.out
 psql ${connectToDb} -1 -c "\
 	grant select, insert, update, delete on all tables in schema public to weather_accuracy_test; \

@@ -13,8 +13,7 @@ ms1=$(date '+%s%2N')
 psqlConnect="-h /run/postgresql/ -d weather_accuracy"
 connectToDb="-h /run/postgresql/ -d weather_accuracy_test"
 psql ${psqlConnect} -c "drop database weather_accuracy_test"
-psql ${psqlConnect} -c "create database weather_accuracy_test"
-						
+psql ${psqlConnect} -c "create database weather_accuracy_test with login"
 
 ./generate-db-schema.sh
 

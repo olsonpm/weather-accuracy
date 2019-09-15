@@ -15,7 +15,7 @@ connectToDefault -c "drop database weather_accuracy"
 connectToDefault -c "create database weather_accuracy"
 
 connectToDb -1 -c "drop role weather_accuracy"
-connectToDb -1 -c "create role weather_accuracy"
+connectToDb -1 -c "create role weather_accuracy with login"
 connectToDb -1 -f ./db-schema.out
 connectToDb -1 -c "\
 	grant select, insert, update, delete on all tables in schema public to weather_accuracy; \
